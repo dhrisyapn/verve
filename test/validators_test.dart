@@ -11,10 +11,22 @@ void main() {
       });
 
       test('returns error for invalid email formats', () {
-        expect(Validators.email('plainaddress'), 'Please enter a valid email address');
-        expect(Validators.email('@missingusername.com'), 'Please enter a valid email address');
-        expect(Validators.email('user@.com'), 'Please enter a valid email address');
-        expect(Validators.email('user@domain'), 'Please enter a valid email address');
+        expect(
+          Validators.email('plainaddress'),
+          'Please enter a valid email address',
+        );
+        expect(
+          Validators.email('@missingusername.com'),
+          'Please enter a valid email address',
+        );
+        expect(
+          Validators.email('user@.com'),
+          'Please enter a valid email address',
+        );
+        expect(
+          Validators.email('user@domain'),
+          'Please enter a valid email address',
+        );
       });
 
       test('returns null for valid email address', () {
@@ -30,8 +42,14 @@ void main() {
       });
 
       test('returns error when password is shorter than minLength', () {
-        expect(Validators.password('12345'), 'Password must be at least 6 characters');
-        expect(Validators.password('abc', minLength: 8), 'Password must be at least 8 characters');
+        expect(
+          Validators.password('12345'),
+          'Password must be at least 6 characters',
+        );
+        expect(
+          Validators.password('abc', minLength: 8),
+          'Password must be at least 8 characters',
+        );
       });
 
       test('returns null for valid password', () {
@@ -44,7 +62,10 @@ void main() {
       test('returns error when value is null or whitespace', () {
         expect(Validators.required(null), 'This field is required');
         expect(Validators.required(''), 'This field is required');
-        expect(Validators.required('   ', fieldName: 'Full name'), 'Full name is required');
+        expect(
+          Validators.required('   ', fieldName: 'Full name'),
+          'Full name is required',
+        );
       });
 
       test('returns null for valid string', () {
@@ -54,12 +75,21 @@ void main() {
 
     group('confirmPassword', () {
       test('returns error when confirmation is empty', () {
-        expect(Validators.confirmPassword(null, 'secret123'), 'Please confirm your password');
-        expect(Validators.confirmPassword('', 'secret123'), 'Please confirm your password');
+        expect(
+          Validators.confirmPassword(null, 'secret123'),
+          'Please confirm your password',
+        );
+        expect(
+          Validators.confirmPassword('', 'secret123'),
+          'Please confirm your password',
+        );
       });
 
       test('returns error when passwords do not match', () {
-        expect(Validators.confirmPassword('secret456', 'secret123'), 'Passwords do not match');
+        expect(
+          Validators.confirmPassword('secret456', 'secret123'),
+          'Passwords do not match',
+        );
       });
 
       test('returns null when passwords match', () {
@@ -87,7 +117,10 @@ void main() {
         expect(Validators.phone(''), 'Please enter your phone number');
         expect(Validators.phone('   '), 'Please enter your phone number');
         expect(Validators.phone('123'), 'Please enter a valid phone number');
-        expect(Validators.phone('abc-def-ghij'), 'Please enter a valid phone number');
+        expect(
+          Validators.phone('abc-def-ghij'),
+          'Please enter a valid phone number',
+        );
       });
 
       test('returns null for valid phone numbers', () {
@@ -104,7 +137,10 @@ void main() {
       });
 
       test('returns error when password is shorter than 8 characters', () {
-        expect(Validators.registerPassword('1234567'), 'Password must be at least 8 characters');
+        expect(
+          Validators.registerPassword('1234567'),
+          'Password must be at least 8 characters',
+        );
       });
 
       test('returns null for valid register password', () {

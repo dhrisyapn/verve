@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:verve/router/app_router.dart';
 import 'package:verve/screens/home/home_screen.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  Widget createSubject() {
-    return const ProviderScope(
+  Widget createSubject({NavigatorObserver? observer}) {
+    return ProviderScope(
       child: MaterialApp(
-        home: HomeScreen(),
+        navigatorKey: AppRouter.navigatorKey,
+        onGenerateRoute: AppRouter.onGenerateRoute,
+        navigatorObservers: observer != null ? [observer] : [],
+        home: const HomeScreen(),
       ),
     );
   }
 
-  group('HomeScreen UI & Interaction Tests', () {
-    testWidgets('renders logo asset and user avatar initial in AppBar',
-        (WidgetTester tester) async {
+  group('HomeScreen UI & Static Structure Tests', () {
+    testWidgets('renders logo asset and user avatar initial in AppBar', (
+      WidgetTester tester,
+    ) async {
       await tester.binding.setSurfaceSize(const Size(400, 1000));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
@@ -46,19 +51,43 @@ void main() {
       expect(avatarFinder, findsOneWidget);
     });
 
-    testWidgets('renders greeting and date section',
-        (WidgetTester tester) async {
-      await tester.binding.setSurfaceSize(const Size(400, 1000));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
+    testWidgets(
+      'renders greeting wish and current date dynamically according to device time',
+      (WidgetTester tester) async {
+        await tester.binding.setSurfaceSize(const Size(400, 1000));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(createSubject());
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(createSubject());
+        await tester.pumpAndSettle();
 
-      expect(find.textContaining('Alex!'), findsOneWidget);
-    });
+        final hour = DateTime.now().hour;
+        final expectedGreeting = hour < 12
+            ? 'Good morning'
+            : hour < 17
+                ? 'Good afternoon'
+                : 'Good evening';
 
-    testWidgets('renders productivity insight card',
-        (WidgetTester tester) async {
+        expect(find.textContaining(expectedGreeting), findsOneWidget);
+        expect(find.textContaining('Alex!'), findsOneWidget);
+
+        // Date check
+        const weekdays = [
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday',
+          'Sunday',
+        ];
+        final now = DateTime.now();
+        expect(find.textContaining(weekdays[now.weekday - 1]), findsOneWidget);
+      },
+    );
+
+    testWidgets('renders productivity insight card as static content', (
+      WidgetTester tester,
+    ) async {
       await tester.binding.setSurfaceSize(const Size(400, 1000));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
@@ -80,22 +109,35 @@ void main() {
       );
     });
 
-    testWidgets('renders 4 quick action buttons with correct labels',
-        (WidgetTester tester) async {
-      await tester.binding.setSurfaceSize(const Size(400, 1000));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
+    testWidgets(
+      'renders 4 quick action buttons as static elements (no click actions)',
+      (WidgetTester tester) async {
+        await tester.binding.setSurfaceSize(const Size(400, 1000));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(createSubject());
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(createSubject());
+        await tester.pumpAndSettle();
 
-      expect(find.text('Add Task'), findsOneWidget);
-      expect(find.text('Timer'), findsOneWidget);
-      expect(find.text('Analytics'), findsOneWidget);
-      expect(find.text('Notes'), findsOneWidget);
-    });
+        expect(find.text('Add Task'), findsOneWidget);
+        expect(find.text('Timer'), findsOneWidget);
+        expect(find.text('Analytics'), findsOneWidget);
+        expect(find.text('Notes'), findsOneWidget);
 
-    testWidgets('renders Today\'s Tasks section with initial tasks',
-        (WidgetTester tester) async {
+        // Tapping 'Add Task' does not open a bottom sheet or dialog
+        await tester.tap(find.text('Add Task'));
+        await tester.pumpAndSettle();
+        expect(find.text('Add New Task'), findsNothing);
+
+        // Tapping 'Timer' does not show snackbar
+        await tester.tap(find.text('Timer'));
+        await tester.pumpAndSettle();
+        expect(find.byType(SnackBar), findsNothing);
+      },
+    );
+
+    testWidgets('renders Today\'s Tasks section with static task cards', (
+      WidgetTester tester,
+    ) async {
       await tester.binding.setSurfaceSize(const Size(400, 1000));
       addTearDown(() => tester.binding.setSurfaceSize(null));
 
@@ -107,67 +149,35 @@ void main() {
       expect(find.text('Finalize Q3 Report'), findsNWidgets(3));
       expect(find.text('10:00 AM'), findsNWidgets(3));
       expect(find.text('WORK'), findsNWidgets(3));
-    });
 
-    testWidgets('toggles task completion when task is tapped',
-        (WidgetTester tester) async {
-      await tester.binding.setSurfaceSize(const Size(400, 1000));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
-
-      await tester.pumpWidget(createSubject());
-      await tester.pumpAndSettle();
-
-      // Initially no check icons
+      // Tapping task does not toggle completion (remains static unchecked)
       expect(find.byIcon(Icons.check_rounded), findsNothing);
-
-      // Tap first task item
       final firstTask = find.text('Finalize Q3 Report').first;
-      await tester.ensureVisible(firstTask);
       await tester.tap(firstTask);
       await tester.pumpAndSettle();
-
-      // Check icon is now visible
-      expect(find.byIcon(Icons.check_rounded), findsOneWidget);
-
-      // Tap again to uncheck
-      await tester.tap(firstTask);
-      await tester.pumpAndSettle();
-
       expect(find.byIcon(Icons.check_rounded), findsNothing);
     });
 
-    testWidgets('opens Add Task bottom sheet and creates task',
-        (WidgetTester tester) async {
-      await tester.binding.setSurfaceSize(const Size(400, 1000));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
+    testWidgets(
+      'tapping profile avatar opens profile page as the only action',
+      (WidgetTester tester) async {
+        await tester.binding.setSurfaceSize(const Size(400, 1000));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(createSubject());
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(createSubject());
+        await tester.pumpAndSettle();
 
-      // Tap Add Task action card
-      final addTaskCard = find.text('Add Task');
-      await tester.ensureVisible(addTaskCard);
-      await tester.tap(addTaskCard);
-      await tester.pumpAndSettle();
+        // Find avatar in AppBar
+        final avatar = find.text('A');
+        expect(avatar, findsOneWidget);
 
-      // Verify bottom sheet appears
-      expect(find.text('Add New Task'), findsOneWidget);
-      expect(find.text('TASK TITLE'), findsOneWidget);
+        await tester.tap(avatar);
+        await tester.pumpAndSettle();
 
-      // Enter task title
-      await tester.enterText(
-        find.byType(TextFormField).first,
-        'Prepare Slides',
-      );
-      await tester.pumpAndSettle();
-
-      // Tap Create Task button
-      await tester.tap(find.text('Create Task'));
-      await tester.pumpAndSettle();
-
-      // Verify bottom sheet closed and new task is listed
-      expect(find.text('Add New Task'), findsNothing);
-      expect(find.text('Prepare Slides'), findsOneWidget);
-    });
+        // Profile screen is pushed
+        expect(find.text('Profile'), findsOneWidget);
+        expect(find.text('Sign Out'), findsOneWidget);
+      },
+    );
   });
 }

@@ -26,36 +26,19 @@ class AppRouter {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case AppRoutes.splash:
-        return _buildRoute(
-          const SplashScreen(),
-          settings: settings,
-        );
+        return _buildRoute(const SplashScreen(), settings: settings);
       case AppRoutes.login:
-        return _buildRoute(
-          const LoginScreen(),
-          settings: settings,
-        );
+        return _buildRoute(const LoginScreen(), settings: settings);
       case AppRoutes.register:
-        return _buildRoute(
-          const RegisterScreen(),
-          settings: settings,
-        );
+        return _buildRoute(const RegisterScreen(), settings: settings);
       case AppRoutes.home:
-        return _buildRoute(
-          const HomeScreen(),
-          settings: settings,
-        );
+        return _buildRoute(const HomeScreen(), settings: settings);
       case AppRoutes.profile:
-        return _buildRoute(
-          const ProfileScreen(),
-          settings: settings,
-        );
+        return _buildRoute(const ProfileScreen(), settings: settings);
       default:
         return _buildRoute(
           Scaffold(
-            body: Center(
-              child: Text('No route defined for ${settings.name}'),
-            ),
+            body: Center(child: Text('No route defined for ${settings.name}')),
           ),
           settings: settings,
         );
@@ -67,10 +50,7 @@ class AppRouter {
     Widget page, {
     required RouteSettings settings,
   }) {
-    return MaterialPageRoute<void>(
-      builder: (_) => page,
-      settings: settings,
-    );
+    return MaterialPageRoute<void>(builder: (_) => page, settings: settings);
   }
 
   /// Pushes a named route onto the navigator stack.

@@ -4,21 +4,19 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 /// Service for managing secure persistent local storage.
 class StorageService {
   StorageService({FlutterSecureStorage? storage})
-      : _storage = storage ??
-            const FlutterSecureStorage(
-              aOptions: AndroidOptions(),
-              iOptions: IOSOptions(
-                accessibility: KeychainAccessibility.first_unlock,
-              ),
-            );
+    : _storage =
+          storage ??
+          const FlutterSecureStorage(
+            aOptions: AndroidOptions(),
+            iOptions: IOSOptions(
+              accessibility: KeychainAccessibility.first_unlock,
+            ),
+          );
 
   final FlutterSecureStorage _storage;
 
   /// Writes a key-value pair to secure storage.
-  Future<void> write({
-    required String key,
-    required String value,
-  }) async {
+  Future<void> write({required String key, required String value}) async {
     await _storage.write(key: key, value: value);
   }
 
@@ -54,6 +52,8 @@ abstract final class StorageKeys {
   static const String refreshToken = 'refresh_token';
   static const String userId = 'user_id';
   static const String userEmail = 'user_email';
+  static const String userName = 'user_name';
+  static const String userPhone = 'user_phone';
 }
 
 /// Riverpod provider for accessing [StorageService].

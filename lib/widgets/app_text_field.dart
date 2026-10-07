@@ -38,16 +38,21 @@ class AppTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final labelStyle =
-        isDark ? AppTheme.darkAuthFieldLabelStyle : AppTheme.authFieldLabelStyle;
-    final inputStyle =
-        isDark ? AppTheme.darkAuthFieldInputStyle : AppTheme.authFieldInputStyle;
-    final hintStyle =
-        isDark ? AppTheme.darkAuthFieldHintStyle : AppTheme.authFieldHintStyle;
-    final fillColor =
-        isDark ? AppTheme.darkAuthFieldFill : AppTheme.authFieldFill;
-    final borderColor =
-        isDark ? AppTheme.darkAuthFieldBorder : AppTheme.authFieldBorder;
+    final labelStyle = isDark
+        ? AppTheme.darkAuthFieldLabelStyle
+        : AppTheme.authFieldLabelStyle;
+    final inputStyle = isDark
+        ? AppTheme.darkAuthFieldInputStyle
+        : AppTheme.authFieldInputStyle;
+    final hintStyle = isDark
+        ? AppTheme.darkAuthFieldHintStyle
+        : AppTheme.authFieldHintStyle;
+    final fillColor = isDark
+        ? AppTheme.darkAuthFieldFill
+        : AppTheme.authFieldFill;
+    final borderColor = isDark
+        ? AppTheme.darkAuthFieldBorder
+        : AppTheme.authFieldBorder;
     final focusedBorderColor = isDark
         ? AppTheme.darkAuthFieldBorderFocused
         : AppTheme.authFieldBorderFocused;
@@ -59,10 +64,7 @@ class AppTextField extends StatelessWidget {
         if (label != null && label!.isNotEmpty) ...[
           Padding(
             padding: const EdgeInsets.only(left: 4.0),
-            child: Text(
-              label!,
-              style: labelStyle,
-            ),
+            child: Text(label!, style: labelStyle),
           ),
           const SizedBox(height: AppTheme.authLabelSpacing),
         ],
@@ -102,11 +104,17 @@ class AppTextField extends StatelessWidget {
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppTheme.authFieldRadius),
-              borderSide: const BorderSide(color: AppTheme.errorColor, width: 1.0),
+              borderSide: const BorderSide(
+                color: AppTheme.errorColor,
+                width: 1.0,
+              ),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppTheme.authFieldRadius),
-              borderSide: const BorderSide(color: AppTheme.errorColor, width: 1.5),
+              borderSide: const BorderSide(
+                color: AppTheme.errorColor,
+                width: 1.5,
+              ),
             ),
           ),
         ),

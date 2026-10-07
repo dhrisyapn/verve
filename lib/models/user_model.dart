@@ -4,12 +4,14 @@ class UserModel {
     required this.id,
     required this.email,
     this.name,
+    this.phoneNumber,
     this.avatarUrl,
   });
 
   final String id;
   final String email;
   final String? name;
+  final String? phoneNumber;
   final String? avatarUrl;
 
   /// Creates a [UserModel] from a JSON map.
@@ -18,6 +20,7 @@ class UserModel {
       id: json['id'] as String,
       email: json['email'] as String,
       name: json['name'] as String?,
+      phoneNumber: json['phone_number'] as String?,
       avatarUrl: json['avatar_url'] as String?,
     );
   }
@@ -28,6 +31,7 @@ class UserModel {
       'id': id,
       'email': email,
       if (name != null) 'name': name,
+      if (phoneNumber != null) 'phone_number': phoneNumber,
       if (avatarUrl != null) 'avatar_url': avatarUrl,
     };
   }
@@ -37,12 +41,14 @@ class UserModel {
     String? id,
     String? email,
     String? name,
+    String? phoneNumber,
     String? avatarUrl,
   }) {
     return UserModel(
       id: id ?? this.id,
       email: email ?? this.email,
       name: name ?? this.name,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
       avatarUrl: avatarUrl ?? this.avatarUrl,
     );
   }

@@ -9,16 +9,13 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   Widget createSubject() {
-    return const ProviderScope(
-      child: MaterialApp(
-        home: RegisterScreen(),
-      ),
-    );
+    return const ProviderScope(child: MaterialApp(home: RegisterScreen()));
   }
 
   group('RegisterScreen UI & Interaction Tests', () {
-    testWidgets('renders header, logo, title, and subtitle',
-        (WidgetTester tester) async {
+    testWidgets('renders header, logo, title, and subtitle', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createSubject());
       await tester.pumpAndSettle();
 
@@ -38,8 +35,9 @@ void main() {
       expect(asset.assetName, 'assets/logo-app.png');
     });
 
-    testWidgets('renders all 5 input fields with labels and hints',
-        (WidgetTester tester) async {
+    testWidgets('renders all 5 input fields with labels and hints', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createSubject());
       await tester.pumpAndSettle();
 
@@ -64,8 +62,9 @@ void main() {
       expect(find.text('Log in here'), findsOneWidget);
     });
 
-    testWidgets('toggles password and confirm password visibility',
-        (WidgetTester tester) async {
+    testWidgets('toggles password and confirm password visibility', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createSubject());
       await tester.pumpAndSettle();
 
@@ -91,8 +90,9 @@ void main() {
       expect(find.byIcon(Icons.visibility_outlined), findsNothing);
     });
 
-    testWidgets('validates required fields on submit',
-        (WidgetTester tester) async {
+    testWidgets('validates required fields on submit', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createSubject());
       await tester.pumpAndSettle();
 
@@ -109,8 +109,9 @@ void main() {
       expect(find.text('Please confirm your password'), findsOneWidget);
     });
 
-    testWidgets('validates password length and password mismatch',
-        (WidgetTester tester) async {
+    testWidgets('validates password length and password mismatch', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createSubject());
       await tester.pumpAndSettle();
 
@@ -130,12 +131,16 @@ void main() {
       await tester.tap(find.byType(AppButton));
       await tester.pumpAndSettle();
 
-      expect(find.text('Password must be at least 8 characters'), findsOneWidget);
+      expect(
+        find.text('Password must be at least 8 characters'),
+        findsOneWidget,
+      );
       expect(find.text('Passwords do not match'), findsOneWidget);
     });
 
-    testWidgets('validates password matching succeeds when identical',
-        (WidgetTester tester) async {
+    testWidgets('validates password matching succeeds when identical', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createSubject());
       await tester.pumpAndSettle();
 

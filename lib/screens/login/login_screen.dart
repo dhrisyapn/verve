@@ -111,176 +111,171 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           : AppTheme.authBackgroundColor,
       body: SafeArea(
         child: LayoutBuilder(
-            builder: (context, constraints) {
-              return SingleChildScrollView(
-                physics: const ClampingScrollPhysics(),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                  child: IntrinsicHeight(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 32.0,
-                        vertical: 20.0,
-                      ),
-                      child: Column(
-                        children: [
-                          const Spacer(flex: 3),
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: IntrinsicHeight(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 32.0,
+                      vertical: 20.0,
+                    ),
+                    child: Column(
+                      children: [
+                        const Spacer(flex: 3),
 
-                          // Brand Logo & Header
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                              AppTheme.authLogoRadius,
+                        // Brand Logo & Header
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                            AppTheme.authLogoRadius,
+                          ),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(
+                              sigmaX: AppTheme.authBlurSigma,
+                              sigmaY: AppTheme.authBlurSigma,
                             ),
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(
-                                sigmaX: AppTheme.authBlurSigma,
-                                sigmaY: AppTheme.authBlurSigma,
-                              ),
-                              child: Container(
-                                width: AppTheme.authLogoCardSize,
-                                height: AppTheme.authLogoCardSize,
-                                decoration: isDark
-                                    ? AppTheme.darkAuthLogoDecoration
-                                    : AppTheme.authLogoDecoration,
-                                alignment: Alignment.center,
-                                child: Image.asset(
-                                  'assets/logo-app.png',
-                                  width: AppTheme.authLogoIconSize,
-                                  height: AppTheme.authLogoIconSize,
-                                  fit: BoxFit.contain,
-                                ),
+                            child: Container(
+                              width: AppTheme.authLogoCardSize,
+                              height: AppTheme.authLogoCardSize,
+                              decoration: isDark
+                                  ? AppTheme.darkAuthLogoDecoration
+                                  : AppTheme.authLogoDecoration,
+                              alignment: Alignment.center,
+                              child: Image.asset(
+                                'assets/logo-app.png',
+                                width: AppTheme.authLogoIconSize,
+                                height: AppTheme.authLogoIconSize,
+                                fit: BoxFit.contain,
                               ),
                             ),
                           ),
-                          const SizedBox(height: 24.0),
-                          Text(
-                            'Verve',
-                            style: titleStyle,
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 8.0),
-                          Text(
-                            'Unlock your peak productivity.',
-                            style: subtitleStyle,
-                            textAlign: TextAlign.center,
-                          ),
+                        ),
+                        const SizedBox(height: 24.0),
+                        Text(
+                          'Verve',
+                          style: titleStyle,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 8.0),
+                        Text(
+                          'Unlock your peak productivity.',
+                          style: subtitleStyle,
+                          textAlign: TextAlign.center,
+                        ),
 
-                          const SizedBox(height: 32.0),
+                        const SizedBox(height: 32.0),
 
-                          // Frosted Glassmorphism Login Card
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                              AppTheme.authCardRadius,
+                        // Frosted Glassmorphism Login Card
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                            AppTheme.authCardRadius,
+                          ),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(
+                              sigmaX: AppTheme.authBlurSigma,
+                              sigmaY: AppTheme.authBlurSigma,
                             ),
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(
-                                sigmaX: AppTheme.authBlurSigma,
-                                sigmaY: AppTheme.authBlurSigma,
+                            child: Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.all(
+                                AppTheme.authCardPadding,
                               ),
-                              child: Container(
-                                width: double.infinity,
-                                padding: const EdgeInsets.all(
-                                  AppTheme.authCardPadding,
-                                ),
-                                decoration: isDark
-                                    ? AppTheme.darkAuthCardDecoration
-                                    : AppTheme.authCardDecoration,
-                                child: Form(
-                                  key: _formKey,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      // Email Field
-                                      AppTextField(
-                                        label: 'EMAIL ADDRESS',
-                                        hintText: 'hello@verve.app',
-                                        controller: _emailController,
-                                        focusNode: _emailFocusNode,
-                                        keyboardType:
-                                            TextInputType.emailAddress,
-                                        textInputAction: TextInputAction.next,
-                                        validator: Validators.email,
-                                        onFieldSubmitted: (_) {
-                                          _passwordFocusNode.requestFocus();
-                                        },
-                                      ),
-                                      const SizedBox(
-                                        height: AppTheme.authFieldSpacing,
-                                      ),
+                              decoration: isDark
+                                  ? AppTheme.darkAuthCardDecoration
+                                  : AppTheme.authCardDecoration,
+                              child: Form(
+                                key: _formKey,
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    // Email Field
+                                    AppTextField(
+                                      label: 'EMAIL ADDRESS',
+                                      hintText: 'hello@verve.app',
+                                      controller: _emailController,
+                                      focusNode: _emailFocusNode,
+                                      keyboardType: TextInputType.emailAddress,
+                                      textInputAction: TextInputAction.next,
+                                      validator: Validators.email,
+                                      onFieldSubmitted: (_) {
+                                        _passwordFocusNode.requestFocus();
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: AppTheme.authFieldSpacing,
+                                    ),
 
-                                      // Password Field
-                                      AppTextField(
-                                        label: 'PASSWORD',
-                                        hintText: '••••••••',
-                                        controller: _passwordController,
-                                        focusNode: _passwordFocusNode,
-                                        obscureText: _obscurePassword,
-                                        keyboardType:
-                                            TextInputType.visiblePassword,
-                                        textInputAction: TextInputAction.done,
-                                        validator: Validators.password,
-                                        onFieldSubmitted: (_) =>
-                                            _handleSignIn(),
-                                        suffixIcon: IconButton(
-                                          icon: Icon(
-                                            _obscurePassword
-                                                ? Icons.visibility_outlined
-                                                : Icons.visibility_off_outlined,
-                                            size: 20.0,
-                                            color: AppTheme.textSecondary,
-                                          ),
-                                          splashRadius: 20.0,
-                                          onPressed: _togglePasswordVisibility,
+                                    // Password Field
+                                    AppTextField(
+                                      label: 'PASSWORD',
+                                      hintText: '••••••••',
+                                      controller: _passwordController,
+                                      focusNode: _passwordFocusNode,
+                                      obscureText: _obscurePassword,
+                                      keyboardType:
+                                          TextInputType.visiblePassword,
+                                      textInputAction: TextInputAction.done,
+                                      validator: Validators.password,
+                                      onFieldSubmitted: (_) => _handleSignIn(),
+                                      suffixIcon: IconButton(
+                                        icon: Icon(
+                                          _obscurePassword
+                                              ? Icons.visibility_outlined
+                                              : Icons.visibility_off_outlined,
+                                          size: 20.0,
+                                          color: AppTheme.textSecondary,
                                         ),
+                                        splashRadius: 20.0,
+                                        onPressed: _togglePasswordVisibility,
                                       ),
-                                      const SizedBox(height: 24.0),
+                                    ),
+                                    const SizedBox(height: 24.0),
 
-                                      // Sign In Button
-                                      AppButton(
-                                        text: 'Sign In',
-                                        isLoading: _isLoading,
-                                        onPressed: _handleSignIn,
-                                      ),
-                                    ],
-                                  ),
+                                    // Sign In Button
+                                    AppButton(
+                                      text: 'Sign In',
+                                      isLoading: _isLoading,
+                                      onPressed: _handleSignIn,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                           ),
+                        ),
 
-                          const Spacer(flex: 4),
+                        const Spacer(flex: 4),
 
-                          // Footer / Create Account Prompt
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 12.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'New to Verve? ',
-                                  style: footerPromptStyle,
+                        // Footer / Create Account Prompt
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 12.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('New to Verve? ', style: footerPromptStyle),
+                              GestureDetector(
+                                onTap: _navigateToRegister,
+                                child: Text(
+                                  'Create an account',
+                                  style: footerActionStyle,
                                 ),
-                                GestureDetector(
-                                  onTap: _navigateToRegister,
-                                  child: Text(
-                                    'Create an account',
-                                    style: footerActionStyle,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
+      ),
     );
   }
 }

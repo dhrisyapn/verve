@@ -784,17 +784,29 @@ class AppTheme {
 
   static const Color homeBlue = Color(0xFF3B82F6);
   static const Color homeDarkBlue = Color(0xFF60A5FA);
-  static const Color homeCardBackground = Color(0xA6FFFFFF); // rgba(255, 255, 255, 0.65)
+  static const Color homeCardBackground = Color(
+    0xA6FFFFFF,
+  ); // rgba(255, 255, 255, 0.65)
   static const Color darkHomeCardBackground = Color(0xB31E293B);
-  static const Color homeCardBorder = Color(0xCCCACACA); // rgba(202, 202, 202, 0.80)
+  static const Color homeCardBorder = Color(
+    0xCCCACACA,
+  ); // rgba(202, 202, 202, 0.80)
   static const Color darkHomeCardBorder = Color(0x4D475569);
-  static const Color homeActionCardBackground = Color(0x66FFFFFF); // rgba(255, 255, 255, 0.40)
+  static const Color homeActionCardBackground = Color(
+    0x66FFFFFF,
+  ); // rgba(255, 255, 255, 0.40)
   static const Color darkHomeActionCardBackground = Color(0x661E293B);
-  static const Color homeActionCardBorder = Color(0x99CACACA); // rgba(202, 202, 202, 0.60)
+  static const Color homeActionCardBorder = Color(
+    0x99CACACA,
+  ); // rgba(202, 202, 202, 0.60)
   static const Color darkHomeActionCardBorder = Color(0x4D475569);
-  static const Color homeTaskCardBackground = Color(0x66FFFFFF); // rgba(255, 255, 255, 0.40)
+  static const Color homeTaskCardBackground = Color(
+    0x66FFFFFF,
+  ); // rgba(255, 255, 255, 0.40)
   static const Color darkHomeTaskCardBackground = Color(0x661E293B);
-  static const Color homeTaskCardBorder = Color(0x99CACACA); // rgba(202, 202, 202, 0.60)
+  static const Color homeTaskCardBorder = Color(
+    0x99CACACA,
+  ); // rgba(202, 202, 202, 0.60)
   static const Color darkHomeTaskCardBorder = Color(0x4D475569);
   static const Color homeBadgeBackground = Color(0xFFEFF6FF);
   static const Color darkHomeBadgeBackground = Color(0x333B82F6);
@@ -886,12 +898,13 @@ class AppTheme {
     height: 1.33,
   );
 
-  static TextStyle get darkHomeInsightHighlightStyle => GoogleFonts.plusJakartaSans(
-    color: homeDarkBlue,
-    fontSize: 24.0,
-    fontWeight: FontWeight.w800,
-    height: 1.33,
-  );
+  static TextStyle get darkHomeInsightHighlightStyle =>
+      GoogleFonts.plusJakartaSans(
+        color: homeDarkBlue,
+        fontSize: 24.0,
+        fontWeight: FontWeight.w800,
+        height: 1.33,
+      );
 
   static TextStyle get homeInsightSubtitleStyle => GoogleFonts.plusJakartaSans(
     color: textPrimary,
@@ -900,12 +913,13 @@ class AppTheme {
     height: 1.43,
   );
 
-  static TextStyle get darkHomeInsightSubtitleStyle => GoogleFonts.plusJakartaSans(
-    color: darkTextPrimary,
-    fontSize: 14.0,
-    fontWeight: FontWeight.w400,
-    height: 1.43,
-  );
+  static TextStyle get darkHomeInsightSubtitleStyle =>
+      GoogleFonts.plusJakartaSans(
+        color: darkTextPrimary,
+        fontSize: 14.0,
+        fontWeight: FontWeight.w400,
+        height: 1.43,
+      );
 
   static TextStyle get homeActionTitleStyle => GoogleFonts.plusJakartaSans(
     color: textPrimary,
@@ -963,21 +977,23 @@ class AppTheme {
     height: 1.43,
   );
 
-  static TextStyle get homeTaskTitleCompletedStyle => GoogleFonts.plusJakartaSans(
-    color: textSecondary,
-    fontSize: 14.0,
-    fontWeight: FontWeight.w500,
-    height: 1.43,
-    decoration: TextDecoration.lineThrough,
-  );
+  static TextStyle get homeTaskTitleCompletedStyle =>
+      GoogleFonts.plusJakartaSans(
+        color: textSecondary,
+        fontSize: 14.0,
+        fontWeight: FontWeight.w500,
+        height: 1.43,
+        decoration: TextDecoration.lineThrough,
+      );
 
-  static TextStyle get darkHomeTaskTitleCompletedStyle => GoogleFonts.plusJakartaSans(
-    color: darkTextSecondary,
-    fontSize: 14.0,
-    fontWeight: FontWeight.w500,
-    height: 1.43,
-    decoration: TextDecoration.lineThrough,
-  );
+  static TextStyle get darkHomeTaskTitleCompletedStyle =>
+      GoogleFonts.plusJakartaSans(
+        color: darkTextSecondary,
+        fontSize: 14.0,
+        fontWeight: FontWeight.w500,
+        height: 1.43,
+        decoration: TextDecoration.lineThrough,
+      );
 
   static TextStyle get homeTaskTimeStyle => GoogleFonts.plusJakartaSans(
     color: homeTaskTimeColor,
@@ -1148,11 +1164,12 @@ class AppTheme {
     fontWeight: FontWeight.w600,
   );
 
-  static TextStyle get darkHomeChipSelectedTextStyle => GoogleFonts.plusJakartaSans(
-    color: Colors.white,
-    fontSize: 12.0,
-    fontWeight: FontWeight.w600,
-  );
+  static TextStyle get darkHomeChipSelectedTextStyle =>
+      GoogleFonts.plusJakartaSans(
+        color: Colors.white,
+        fontSize: 12.0,
+        fontWeight: FontWeight.w600,
+      );
 
   static BoxDecoration get homeModalDecoration => const BoxDecoration(
     color: homeModalBackground,
@@ -1162,5 +1179,201 @@ class AppTheme {
   static BoxDecoration get darkHomeModalDecoration => const BoxDecoration(
     color: darkHomeModalBackground,
     borderRadius: BorderRadius.vertical(top: Radius.circular(24.0)),
+  );
+
+  // -------------------------
+  // Profile Screen Design Tokens
+  // -------------------------
+  static const double profileAvatarSize = 112.0;
+  static const double profileAvatarBadgeSize = 32.0;
+  static const double profileItemIconSize = 40.0;
+  static const double profileBackButtonSize = 40.0;
+  static const double profileCardRadius = 24.0;
+  static const double profileBackButtonRadius = 12.0;
+  static const double profileSignOutRadius = 16.0;
+
+  static const Color profileBackButtonBg = Color(
+    0xA6FFFFFF,
+  ); // rgba(255, 255, 255, 0.65)
+  static const Color darkProfileBackButtonBg = Color(0x33334155);
+  static const Color profileBackButtonBorder = Color(
+    0xCCCACACA,
+  ); // rgba(202, 202, 202, 0.80)
+  static const Color darkProfileBackButtonBorder = Color(0x4D475569);
+
+  static const Color profileAvatarBg = Color(0xFF3B82F6);
+  static const Color profileAvatarBadgeBg = Colors.white;
+  static const Color darkProfileAvatarBadgeBg = Color(0xFF1E293B);
+  static const Color profileAvatarBadgeBorder = Color(0xFFF3F4F6);
+  static const Color darkProfileAvatarBadgeBorder = Color(0xFF334155);
+
+  static const Color profileCardBg = Color(
+    0xA6FFFFFF,
+  ); // rgba(255, 255, 255, 0.65)
+  static const Color darkProfileCardBg = Color(0xB31E293B);
+  static const Color profileCardBorder = Color(
+    0xCCCACACA,
+  ); // rgba(202, 202, 202, 0.80)
+  static const Color darkProfileCardBorder = Color(0x4D475569);
+
+  static const Color profileIconBg = Color(0xFFEFF6FF);
+  static const Color darkProfileIconBg = Color(0x333B82F6);
+  static const Color profileIconColor = Color(0xFF3B82F6);
+  static const Color darkProfileIconColor = Color(0xFF60A5FA);
+
+  static const Color profileDividerColor = Color(
+    0x99E2E8F0,
+  ); // rgba(226, 232, 240, 0.60)
+  static const Color darkProfileDividerColor = Color(0x33475569);
+
+  static const Color profileSignOutBg = Color(
+    0xA6FFFFFF,
+  ); // rgba(255, 255, 255, 0.65)
+  static const Color darkProfileSignOutBg = Color(0x331E293B);
+  static const Color profileSignOutBorder = Color(0xFFFFE4E6); // #FFE4E6
+  static const Color darkProfileSignOutBorder = Color(0x66F43F5E);
+  static const Color profileSignOutText = Color(0xFFF43F5E); // #F43F5E
+  static const Color darkProfileSignOutText = Color(0xFFFB7185);
+
+  // Profile Screen Typography
+  static TextStyle get profileAppBarTitleStyle => GoogleFonts.plusJakartaSans(
+    color: textPrimary,
+    fontSize: 18.0,
+    fontWeight: FontWeight.w800,
+    height: 1.55,
+  );
+
+  static TextStyle get darkProfileAppBarTitleStyle =>
+      GoogleFonts.plusJakartaSans(
+        color: darkTextPrimary,
+        fontSize: 18.0,
+        fontWeight: FontWeight.w800,
+        height: 1.55,
+      );
+
+  static TextStyle get profileNameStyle => GoogleFonts.plusJakartaSans(
+    color: textPrimary,
+    fontSize: 24.0,
+    fontWeight: FontWeight.w800,
+    height: 1.33,
+  );
+
+  static TextStyle get darkProfileNameStyle => GoogleFonts.plusJakartaSans(
+    color: darkTextPrimary,
+    fontSize: 24.0,
+    fontWeight: FontWeight.w800,
+    height: 1.33,
+  );
+
+  static TextStyle get profileItemLabelStyle => GoogleFonts.plusJakartaSans(
+    color: textSecondary,
+    fontSize: 10.0,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 0.50,
+    height: 1.5,
+  );
+
+  static TextStyle get darkProfileItemLabelStyle => GoogleFonts.plusJakartaSans(
+    color: darkTextSecondary,
+    fontSize: 10.0,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 0.50,
+    height: 1.5,
+  );
+
+  static TextStyle get profileItemValueStyle => GoogleFonts.plusJakartaSans(
+    color: textPrimary,
+    fontSize: 14.0,
+    fontWeight: FontWeight.w600,
+    height: 1.43,
+  );
+
+  static TextStyle get darkProfileItemValueStyle => GoogleFonts.plusJakartaSans(
+    color: darkTextPrimary,
+    fontSize: 14.0,
+    fontWeight: FontWeight.w600,
+    height: 1.43,
+  );
+
+  static TextStyle get profileSignOutStyle => GoogleFonts.plusJakartaSans(
+    color: profileSignOutText,
+    fontSize: 16.0,
+    fontWeight: FontWeight.w700,
+    height: 1.5,
+  );
+
+  static TextStyle get darkProfileSignOutStyle => GoogleFonts.plusJakartaSans(
+    color: darkProfileSignOutText,
+    fontSize: 16.0,
+    fontWeight: FontWeight.w700,
+    height: 1.5,
+  );
+
+  static TextStyle get profileAvatarTextStyle => GoogleFonts.plusJakartaSans(
+    color: Colors.white,
+    fontSize: 48.0,
+    fontWeight: FontWeight.w800,
+    height: 1.0,
+  );
+
+  // Profile Screen Decorations (Strictly Flat, Zero Shadows)
+  static BoxDecoration get profileBackButtonDecoration => BoxDecoration(
+    color: profileBackButtonBg,
+    borderRadius: BorderRadius.circular(profileBackButtonRadius),
+    border: Border.all(color: profileBackButtonBorder, width: 1.0),
+  );
+
+  static BoxDecoration get darkProfileBackButtonDecoration => BoxDecoration(
+    color: darkProfileBackButtonBg,
+    borderRadius: BorderRadius.circular(profileBackButtonRadius),
+    border: Border.all(color: darkProfileBackButtonBorder, width: 1.0),
+  );
+
+  static BoxDecoration get profileAvatarDecoration =>
+      const BoxDecoration(color: profileAvatarBg, shape: BoxShape.circle);
+
+  static BoxDecoration get darkProfileAvatarDecoration =>
+      const BoxDecoration(color: profileAvatarBg, shape: BoxShape.circle);
+
+  static BoxDecoration get profileAvatarBadgeDecoration => BoxDecoration(
+    color: profileAvatarBadgeBg,
+    shape: BoxShape.circle,
+    border: Border.all(color: profileAvatarBadgeBorder, width: 1.0),
+  );
+
+  static BoxDecoration get darkProfileAvatarBadgeDecoration => BoxDecoration(
+    color: darkProfileAvatarBadgeBg,
+    shape: BoxShape.circle,
+    border: Border.all(color: darkProfileAvatarBadgeBorder, width: 1.0),
+  );
+
+  static BoxDecoration get profileCardDecoration => BoxDecoration(
+    color: profileCardBg,
+    borderRadius: BorderRadius.circular(profileCardRadius),
+    border: Border.all(color: profileCardBorder, width: 1.0),
+  );
+
+  static BoxDecoration get darkProfileCardDecoration => BoxDecoration(
+    color: darkProfileCardBg,
+    borderRadius: BorderRadius.circular(profileCardRadius),
+    border: Border.all(color: darkProfileCardBorder, width: 1.0),
+  );
+
+  static BoxDecoration get profileItemIconDecoration =>
+      const BoxDecoration(color: profileIconBg, shape: BoxShape.circle);
+
+  static BoxDecoration get darkProfileItemIconDecoration =>
+      const BoxDecoration(color: darkProfileIconBg, shape: BoxShape.circle);
+
+  static BoxDecoration get profileSignOutDecoration => BoxDecoration(
+    color: profileSignOutBg,
+    borderRadius: BorderRadius.circular(profileSignOutRadius),
+    border: Border.all(color: profileSignOutBorder, width: 1.0),
+  );
+
+  static BoxDecoration get darkProfileSignOutDecoration => BoxDecoration(
+    color: darkProfileSignOutBg,
+    borderRadius: BorderRadius.circular(profileSignOutRadius),
+    border: Border.all(color: darkProfileSignOutBorder, width: 1.0),
   );
 }

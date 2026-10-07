@@ -11,8 +11,9 @@ import 'package:verve/screens/splash/splash_screen.dart';
 
 void main() {
   group('AppRouter Route Generation Tests', () {
-    testWidgets('resolves all defined routes to expected screens',
-        (WidgetTester tester) async {
+    testWidgets('resolves all defined routes to expected screens', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Builder(
@@ -56,13 +57,10 @@ void main() {
   });
 
   group('MyApp App Router Integration', () {
-    testWidgets('renders initial SplashScreen via AppRouter',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(
-        const ProviderScope(
-          child: MyApp(),
-        ),
-      );
+    testWidgets('renders initial SplashScreen via AppRouter', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(const ProviderScope(child: MyApp()));
       expect(find.byType(SplashScreen), findsOneWidget);
       expect(find.text('Verve'), findsOneWidget);
     });

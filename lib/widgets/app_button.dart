@@ -37,10 +37,7 @@ class AppButton extends StatelessWidget {
                   ),
                 ),
               )
-            : Text(
-                text,
-                style: AppTheme.authButtonStyle,
-              ),
+            : Text(text, style: AppTheme.authButtonStyle),
       ),
     );
   }

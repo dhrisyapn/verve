@@ -97,15 +97,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
       if (!mounted) return;
 
-      await AppRouter.pushNamedAndRemoveUntil(
-        AppRoutes.home,
-        (route) => false,
-      );
+      await AppRouter.pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
     } catch (error) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registration failed: $error')),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Registration failed: $error')));
     } finally {
       if (mounted) {
         setState(() {
@@ -234,8 +230,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                       hintText: 'hello@verve.app',
                                       controller: _emailController,
                                       focusNode: _emailFocusNode,
-                                      keyboardType:
-                                          TextInputType.emailAddress,
+                                      keyboardType: TextInputType.emailAddress,
                                       textInputAction: TextInputAction.next,
                                       validator: Validators.email,
                                       onFieldSubmitted: (_) {
@@ -306,9 +301,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                       textInputAction: TextInputAction.done,
                                       validator: (value) =>
                                           Validators.confirmPassword(
-                                        value,
-                                        _passwordController.text,
-                                      ),
+                                            value,
+                                            _passwordController.text,
+                                          ),
                                       onFieldSubmitted: (_) =>
                                           _handleRegister(),
                                       suffixIcon: IconButton(

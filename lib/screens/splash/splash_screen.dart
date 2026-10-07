@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:verve/router/app_router.dart';
@@ -35,10 +36,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     );
 
     _scaleAnimation = Tween<double>(begin: 0.90, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeOutCubic,
-      ),
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic),
     );
 
     _animationController.forward();
@@ -97,10 +95,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                 ),
                 const SizedBox(height: AppTheme.splashTitleSpacing),
                 // Verve Brand Title
-                Text(
-                  'Verve',
-                  style: AppTheme.splashTitleStyle,
-                ),
+                Text('Verve', style: AppTheme.splashTitleStyle),
               ],
             ),
           ),

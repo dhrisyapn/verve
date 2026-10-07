@@ -9,16 +9,13 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   Widget createSubject() {
-    return const ProviderScope(
-      child: MaterialApp(
-        home: LoginScreen(),
-      ),
-    );
+    return const ProviderScope(child: MaterialApp(home: LoginScreen()));
   }
 
   group('LoginScreen UI & Interaction Tests', () {
-    testWidgets('renders header, logo, title, and subtitle',
-        (WidgetTester tester) async {
+    testWidgets('renders header, logo, title, and subtitle', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createSubject());
       await tester.pumpAndSettle();
 
@@ -35,8 +32,9 @@ void main() {
       expect(asset.assetName, 'assets/logo-app.png');
     });
 
-    testWidgets('renders input fields with labels and placeholders',
-        (WidgetTester tester) async {
+    testWidgets('renders input fields with labels and placeholders', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createSubject());
       await tester.pumpAndSettle();
 
@@ -56,8 +54,9 @@ void main() {
       expect(find.text('Create an account'), findsOneWidget);
     });
 
-    testWidgets('toggles password visibility when eye icon is pressed',
-        (WidgetTester tester) async {
+    testWidgets('toggles password visibility when eye icon is pressed', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createSubject());
       await tester.pumpAndSettle();
 
@@ -78,8 +77,9 @@ void main() {
       expect(find.byIcon(Icons.visibility_outlined), findsNothing);
     });
 
-    testWidgets('validates required fields on submit',
-        (WidgetTester tester) async {
+    testWidgets('validates required fields on submit', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(createSubject());
       await tester.pumpAndSettle();
 
@@ -91,8 +91,7 @@ void main() {
       expect(find.text('Please enter your password'), findsOneWidget);
     });
 
-    testWidgets('validates invalid email format',
-        (WidgetTester tester) async {
+    testWidgets('validates invalid email format', (WidgetTester tester) async {
       await tester.pumpWidget(createSubject());
       await tester.pumpAndSettle();
 
