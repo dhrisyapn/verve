@@ -16,6 +16,9 @@ class AppTextField extends StatelessWidget {
     this.suffixIcon,
     this.validator,
     this.onFieldSubmitted,
+    this.onChanged,
+    this.errorText,
+    this.autovalidateMode,
     this.focusNode,
     this.enabled = true,
     this.textCapitalization = TextCapitalization.none,
@@ -30,6 +33,9 @@ class AppTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onFieldSubmitted;
+  final ValueChanged<String>? onChanged;
+  final String? errorText;
+  final AutovalidateMode? autovalidateMode;
   final FocusNode? focusNode;
   final bool enabled;
   final TextCapitalization textCapitalization;
@@ -47,6 +53,9 @@ class AppTextField extends StatelessWidget {
     final hintStyle = isDark
         ? AppTheme.darkAuthFieldHintStyle
         : AppTheme.authFieldHintStyle;
+    final errorStyle = isDark
+        ? AppTheme.darkAuthFieldErrorStyle
+        : AppTheme.authFieldErrorStyle;
     final fillColor = isDark
         ? AppTheme.darkAuthFieldFill
         : AppTheme.authFieldFill;
@@ -77,6 +86,8 @@ class AppTextField extends StatelessWidget {
           textCapitalization: textCapitalization,
           validator: validator,
           onFieldSubmitted: onFieldSubmitted,
+          onChanged: onChanged,
+          autovalidateMode: autovalidateMode,
           enabled: enabled,
           style: inputStyle,
           cursorColor: AppTheme.authBlue,
@@ -90,6 +101,9 @@ class AppTextField extends StatelessWidget {
               vertical: 15.0,
             ),
             suffixIcon: suffixIcon,
+            errorText: errorText,
+            errorStyle: errorStyle,
+            errorMaxLines: 2,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppTheme.authFieldRadius),
               borderSide: BorderSide(color: borderColor, width: 1.0),

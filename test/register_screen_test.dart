@@ -120,7 +120,7 @@ void main() {
       // Enter name, email, phone
       await tester.enterText(formFields.at(0), 'John Doe');
       await tester.enterText(formFields.at(1), 'john@example.com');
-      await tester.enterText(formFields.at(2), '+15551234567');
+      await tester.enterText(formFields.at(2), '9876543210');
 
       // Enter short password
       await tester.enterText(formFields.at(3), '12345');
@@ -132,7 +132,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(
-        find.text('Password must be at least 8 characters'),
+        find.text('Password must be at least 6 characters'),
         findsOneWidget,
       );
       expect(find.text('Passwords do not match'), findsOneWidget);
@@ -148,7 +148,7 @@ void main() {
 
       await tester.enterText(formFields.at(0), 'John Doe');
       await tester.enterText(formFields.at(1), 'john@example.com');
-      await tester.enterText(formFields.at(2), '+15551234567');
+      await tester.enterText(formFields.at(2), '9876543210');
       await tester.enterText(formFields.at(3), 'securePassword123');
       await tester.enterText(formFields.at(4), 'securePassword123');
 
@@ -161,11 +161,11 @@ void main() {
       expect(find.text('Please enter your full name'), findsNothing);
       expect(find.text('Please enter your email address'), findsNothing);
       expect(find.text('Please enter your phone number'), findsNothing);
-      expect(find.text('Password must be at least 8 characters'), findsNothing);
+      expect(find.text('Password must be at least 6 characters'), findsNothing);
       expect(find.text('Passwords do not match'), findsNothing);
 
       // Advance simulated network request timer
-      await tester.pump(const Duration(milliseconds: 1000));
+      await tester.pump(const Duration(milliseconds: 1500));
     });
   });
 }

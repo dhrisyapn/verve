@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:verve/router/app_router.dart';
 import 'package:verve/screens/profile/profile_screen.dart';
 import 'package:verve/services/storage_service.dart';
@@ -31,6 +32,10 @@ class MockStorageService extends StorageService {
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+
+  setUp(() {
+    SharedPreferences.setMockInitialValues({});
+  });
 
   Widget createSubject({StorageService? storageService}) {
     final mockStorage = storageService ?? MockStorageService();
@@ -174,6 +179,40 @@ void main() {
         findsNothing,
       );
       expect(find.text('Profile'), findsOneWidget);
+    });
+
+    testWidgets('renders appearance card and toggles theme mode switch', (
+      WidgetTester tester,
+    ) async {
+      await tester.binding.setSurfaceSize(const Size(400, 1000));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+
+      final storage = MockStorageService();
+      await tester.pumpWidget(createSubject(storageService: storage));
+      await tester.pumpAndSettle();
+
+      expect(find.text('APPEARANCE'), findsOneWidget);
+      expect(find.text('Light Mode'), findsOneWidget);
+      expect(find.byType(Switch), findsOneWidget);
+
+      final switchWidget = tester.widget<Switch>(find.byType(Switch));
+      expect(switchWidget.value, isFalse);
+
+      // Tap the switch to toggle to Dark Mode
+      await tester.tap(find.byType(Switch));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Dark Mode'), findsOneWidget);
+      final updatedSwitch = tester.widget<Switch>(find.byType(Switch));
+      expect(updatedSwitch.value, isTrue);
+
+      // Tap again to toggle back to Light Mode
+      await tester.tap(find.byType(Switch));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Light Mode'), findsOneWidget);
+      final finalSwitch = tester.widget<Switch>(find.byType(Switch));
+      expect(finalSwitch.value, isFalse);
     });
   });
 }

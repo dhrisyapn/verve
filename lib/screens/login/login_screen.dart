@@ -27,14 +27,48 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   bool _obscurePassword = true;
   bool _isLoading = false;
+  String? _credentialError;
+  String _lastEmailText = '';
+  String _lastPasswordText = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController.addListener(_onEmailChanged);
+    _passwordController.addListener(_onPasswordChanged);
+  }
 
   @override
   void dispose() {
+    _emailController.removeListener(_onEmailChanged);
+    _passwordController.removeListener(_onPasswordChanged);
     _emailController.dispose();
     _passwordController.dispose();
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
     super.dispose();
+  }
+
+  void _onEmailChanged() {
+    if (_emailController.text != _lastEmailText) {
+      _lastEmailText = _emailController.text;
+      _clearCredentialError();
+    }
+  }
+
+  void _onPasswordChanged() {
+    if (_passwordController.text != _lastPasswordText) {
+      _lastPasswordText = _passwordController.text;
+      _clearCredentialError();
+    }
+  }
+
+  void _clearCredentialError() {
+    if (_credentialError != null) {
+      setState(() {
+        _credentialError = null;
+      });
+    }
   }
 
   void _togglePasswordVisibility() {
@@ -55,18 +89,73 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     });
 
     try {
-      // Simulate authentication request
-      await Future<void>.delayed(const Duration(milliseconds: 800));
+      await Future.delayed(AppTheme.buttonLoadingDuration);
+      if (!mounted) return;
+
+      final email = _emailController.text.trim();
+      final password = _passwordController.text;
 
       final storage = ref.read(storageServiceProvider);
+
+      // Check credentials against the registered userdata list in secure storage
+      final users = await storage.getUsers();
+      final matchingIndex = users.indexWhere(
+        (u) =>
+            u.email.trim().toLowerCase() == email.toLowerCase() &&
+            u.password == password,
+      );
+
+      if (matchingIndex == -1) {
+        if (!mounted) return;
+        setState(() {
+          _credentialError = 'Invalid email or password';
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Invalid email or password.'),
+            backgroundColor: AppTheme.errorColor,
+          ),
+        );
+        return;
+      }
+
+      final matchedUser = users[matchingIndex];
+
+      // Copy the user data to a new object currentuser
+      final currentUser = matchedUser.copyWith();
+
+      // Save user data to currentuser in secure storage
+      await storage.saveCurrentUser(currentUser);
+
+      // Persist session tokens for full compatibility
       await storage.write(
         key: StorageKeys.authToken,
         value: 'verve_jwt_token_${DateTime.now().millisecondsSinceEpoch}',
       );
       await storage.write(
         key: StorageKeys.userEmail,
-        value: _emailController.text.trim(),
+        value: currentUser.email,
       );
+      await storage.write(
+        key: StorageKeys.userId,
+        value: currentUser.id,
+      );
+      if (currentUser.name != null && currentUser.name!.isNotEmpty) {
+        await storage.write(
+          key: StorageKeys.userName,
+          value: currentUser.name!,
+        );
+      }
+      if (currentUser.phoneNumber != null &&
+          currentUser.phoneNumber!.isNotEmpty) {
+        await storage.write(
+          key: StorageKeys.userPhone,
+          value: currentUser.phoneNumber!,
+        );
+      }
+
+      // Save user data to provider
+      ref.read(currentUserProvider.notifier).setUser(currentUser);
 
       if (!mounted) return;
 
@@ -201,6 +290,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                       keyboardType: TextInputType.emailAddress,
                                       textInputAction: TextInputAction.next,
                                       validator: Validators.email,
+                                      errorText: _credentialError,
+                                      onChanged: (_) => _clearCredentialError(),
                                       onFieldSubmitted: (_) {
                                         _passwordFocusNode.requestFocus();
                                       },
@@ -220,6 +311,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                           TextInputType.visiblePassword,
                                       textInputAction: TextInputAction.done,
                                       validator: Validators.password,
+                                      errorText: _credentialError,
+                                      onChanged: (_) => _clearCredentialError(),
                                       onFieldSubmitted: (_) => _handleSignIn(),
                                       suffixIcon: IconButton(
                                         icon: Icon(

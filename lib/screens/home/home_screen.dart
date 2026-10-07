@@ -5,11 +5,6 @@ import 'package:verve/router/app_router.dart';
 import 'package:verve/services/storage_service.dart';
 import 'package:verve/theme/app_theme.dart';
 
-/// Home dashboard screen displaying daily greeting, productivity insights,
-/// quick action shortcuts, and today's tasks list.
-///
-/// Features a static UI where the profile avatar is the only tappable element,
-/// while date and greeting wish are dynamically generated from device time.
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -18,8 +13,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  String _userName = 'Alex';
-
   static const List<TaskModel> _tasks = [
     TaskModel(
       id: 'task_1',
@@ -47,25 +40,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _loadUserData();
+    _ensureUserLoaded();
   }
 
-  Future<void> _loadUserData() async {
-    try {
-      final storage = ref.read(storageServiceProvider);
-      final email = await storage.read(key: StorageKeys.userEmail);
-      if (email != null && email.isNotEmpty && mounted) {
-        final namePart = email.split('@').first;
-        if (namePart.isNotEmpty) {
-          final formattedName =
-              '${namePart[0].toUpperCase()}${namePart.substring(1)}';
-          setState(() {
-            _userName = formattedName;
-          });
+  Future<void> _ensureUserLoaded() async {
+    if (ref.read(currentUserProvider) == null) {
+      try {
+        final storage = ref.read(storageServiceProvider);
+        final user = await storage.getCurrentUser();
+        if (user != null && mounted) {
+          ref.read(currentUserProvider.notifier).setUser(user);
         }
+      } catch (_) {
+        // Fallback gracefully
       }
-    } catch (_) {
-      // Fallback remains 'Alex'
     }
   }
 
@@ -117,7 +105,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final userInitial = _userName.isNotEmpty ? _userName[0].toUpperCase() : 'A';
+    final currentUser = ref.watch(currentUserProvider);
+
+    final String displayName;
+    if (currentUser?.name != null && currentUser!.name!.trim().isNotEmpty) {
+      displayName = currentUser.name!.trim();
+    } else if (currentUser?.email != null && currentUser!.email.contains('@')) {
+      final part = currentUser.email.split('@').first;
+      displayName = part.isNotEmpty
+          ? '${part[0].toUpperCase()}${part.substring(1)}'
+          : 'User';
+    } else {
+      displayName = 'Alex';
+    }
+
+    final userInitial =
+        displayName.isNotEmpty ? displayName[0].toUpperCase() : 'A';
 
     return Scaffold(
       backgroundColor: isDark
@@ -175,7 +178,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
                 const SizedBox(height: 4.0),
                 Text(
-                  '${_getGreeting()},\n$_userName!',
+                  '${_getGreeting()},\n$displayName!',
                   style: isDark
                       ? AppTheme.darkHomeGreetingStyle
                       : AppTheme.homeGreetingStyle,
@@ -302,10 +305,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       const SizedBox(height: AppTheme.homeCardSpacing),
                   itemBuilder: (context, index) {
                     final task = _tasks[index];
-                    return _buildTaskItem(
-                      task: task,
-                      isDark: isDark,
-                    );
+                    return _buildTaskItem(task: task, isDark: isDark);
                   },
                 ),
 
@@ -362,10 +362,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildTaskItem({
-    required TaskModel task,
-    required bool isDark,
-  }) {
+  Widget _buildTaskItem({required TaskModel task, required bool isDark}) {
     return Container(
       padding: const EdgeInsets.all(AppTheme.homeTaskCardPadding),
       decoration: isDark

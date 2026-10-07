@@ -102,10 +102,12 @@ void main() {
         expect(Validators.name(null), 'Please enter your full name');
         expect(Validators.name(''), 'Please enter your full name');
         expect(Validators.name('   '), 'Please enter your full name');
-        expect(Validators.name('J'), 'Name must be at least 2 characters');
+        expect(Validators.name('J'), 'Name must be at least 3 characters');
+        expect(Validators.name('Jo'), 'Name must be at least 3 characters');
       });
 
-      test('returns null for valid full name', () {
+      test('returns null for valid full name (at least 3 characters)', () {
+        expect(Validators.name('Joe'), isNull);
         expect(Validators.name('John Doe'), isNull);
         expect(Validators.name('Drishya'), isNull);
       });
@@ -116,17 +118,31 @@ void main() {
         expect(Validators.phone(null), 'Please enter your phone number');
         expect(Validators.phone(''), 'Please enter your phone number');
         expect(Validators.phone('   '), 'Please enter your phone number');
-        expect(Validators.phone('123'), 'Please enter a valid phone number');
+        expect(
+          Validators.phone('123'),
+          'Phone number must be exactly 10 digits',
+        );
+        expect(
+          Validators.phone('12345678901'),
+          'Phone number must be exactly 10 digits',
+        );
         expect(
           Validators.phone('abc-def-ghij'),
-          'Please enter a valid phone number',
+          'Phone number must contain numbers only',
+        );
+        expect(
+          Validators.phone('+1 (555) 000-0000'),
+          'Phone number must contain numbers only',
+        );
+        expect(
+          Validators.phone('+91 9876543210'),
+          'Phone number must contain numbers only',
         );
       });
 
-      test('returns null for valid phone numbers', () {
-        expect(Validators.phone('+1 (555) 000-0000'), isNull);
+      test('returns null for valid phone numbers (exactly 10 digits, numbers only)', () {
         expect(Validators.phone('9876543210'), isNull);
-        expect(Validators.phone('+91 9876543210'), isNull);
+        expect(Validators.phone('1234567890'), isNull);
       });
     });
 
@@ -136,14 +152,15 @@ void main() {
         expect(Validators.registerPassword(''), 'Please enter your password');
       });
 
-      test('returns error when password is shorter than 8 characters', () {
+      test('returns error when password is shorter than 6 characters', () {
         expect(
-          Validators.registerPassword('1234567'),
-          'Password must be at least 8 characters',
+          Validators.registerPassword('12345'),
+          'Password must be at least 6 characters',
         );
       });
 
       test('returns null for valid register password', () {
+        expect(Validators.registerPassword('123456'), isNull);
         expect(Validators.registerPassword('12345678'), isNull);
         expect(Validators.registerPassword('securePassword123!'), isNull);
       });

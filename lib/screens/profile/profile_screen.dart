@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:verve/models/user_model.dart';
 import 'package:verve/router/app_router.dart';
 import 'package:verve/services/storage_service.dart';
+import 'package:verve/services/theme_service.dart';
 import 'package:verve/theme/app_theme.dart';
 import 'package:verve/utils/validators.dart';
 import 'package:verve/widgets/app_button.dart';
 import 'package:verve/widgets/app_text_field.dart';
 
-/// User profile screen presenting account details, editable user info,
-/// and secure sign-out functionality.
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
 
@@ -17,43 +17,36 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
-  String _name = 'Alex Carter';
-  String _email = 'alex.carter@verve.app';
-  String _phone = '+1 (555) 123-4567';
-
   @override
   void initState() {
     super.initState();
-    _loadProfileData();
+    _ensureProfileLoaded();
   }
 
-  Future<void> _loadProfileData() async {
-    try {
-      final storage = ref.read(storageServiceProvider);
-      final storedEmail = await storage.read(key: StorageKeys.userEmail);
-      final storedName = await storage.read(key: StorageKeys.userName);
-      final storedPhone = await storage.read(key: StorageKeys.userPhone);
-
-      if (mounted) {
-        setState(() {
-          if (storedEmail != null && storedEmail.isNotEmpty) {
-            _email = storedEmail;
+  Future<void> _ensureProfileLoaded() async {
+    if (ref.read(currentUserProvider) == null) {
+      try {
+        final storage = ref.read(storageServiceProvider);
+        var user = await storage.getCurrentUser();
+        if (user == null) {
+          final email = await storage.read(key: StorageKeys.userEmail);
+          final name = await storage.read(key: StorageKeys.userName);
+          final phone = await storage.read(key: StorageKeys.userPhone);
+          if (email != null || name != null || phone != null) {
+            user = UserModel(
+              id: 'user_fallback',
+              email: email ?? 'alex.carter@verve.app',
+              name: name ?? 'Alex Carter',
+              phoneNumber: phone ?? '+1 (555) 123-4567',
+            );
           }
-          if (storedName != null && storedName.isNotEmpty) {
-            _name = storedName;
-          } else if (storedEmail != null && storedEmail.isNotEmpty) {
-            final part = storedEmail.split('@').first;
-            if (part.isNotEmpty) {
-              _name = '${part[0].toUpperCase()}${part.substring(1)} Carter';
-            }
-          }
-          if (storedPhone != null && storedPhone.isNotEmpty) {
-            _phone = storedPhone;
-          }
-        });
+        }
+        if (user != null && mounted) {
+          ref.read(currentUserProvider.notifier).setUser(user);
+        }
+      } catch (_) {
+        // Keep defaults
       }
-    } catch (_) {
-      // Keep defaults
     }
   }
 
@@ -125,8 +118,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     if (shouldSignOut != true || !mounted) return;
 
     try {
-      final storage = ref.read(storageServiceProvider);
-      await storage.delete(key: StorageKeys.authToken);
+      // Clear provider data and delete currentuser data from storage
+      await ref.read(currentUserProvider.notifier).signOut();
 
       if (!mounted) return;
       await AppRouter.pushNamedAndRemoveUntil(
@@ -134,6 +127,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         (route) => false,
       );
     } catch (error) {
+      // Ensure provider data is cleared even if storage throws an error
+      ref.read(currentUserProvider.notifier).clearUser();
       if (!mounted) return;
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Failed to sign out: $error')));
@@ -141,9 +136,21 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   void _showEditProfileSheet() {
+    final currentUser = ref.read(currentUserProvider);
     final formKey = GlobalKey<FormState>();
-    final nameController = TextEditingController(text: _name);
-    final phoneController = TextEditingController(text: _phone);
+    final nameController = TextEditingController(
+      text: (currentUser?.name != null && currentUser!.name!.isNotEmpty)
+          ? currentUser.name!
+          : 'Alex Carter',
+    );
+    final phoneController = TextEditingController(
+      text: (currentUser?.phoneNumber != null &&
+              currentUser!.phoneNumber!.isNotEmpty)
+          ? currentUser.phoneNumber!
+          : '+1 (555) 123-4567',
+    );
+
+    bool isSaving = false;
 
     showModalBottomSheet<void>(
       context: context,
@@ -151,104 +158,141 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       elevation: 0,
       backgroundColor: Colors.transparent,
       builder: (sheetContext) {
-        final isDark = Theme.of(sheetContext).brightness == Brightness.dark;
+        return StatefulBuilder(
+          builder: (modalContext, setModalState) {
+            final isDark = Theme.of(modalContext).brightness == Brightness.dark;
 
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(sheetContext).viewInsets.bottom,
-          ),
-          child: Container(
-            decoration: isDark
-                ? AppTheme.darkHomeModalDecoration
-                : AppTheme.homeModalDecoration,
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppTheme.homePadding,
-              vertical: 24.0,
-            ),
-            child: Form(
-              key: formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(modalContext).viewInsets.bottom,
+              ),
+              child: Container(
+                decoration: isDark
+                    ? AppTheme.darkHomeModalDecoration
+                    : AppTheme.homeModalDecoration,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppTheme.homePadding,
+                  vertical: 24.0,
+                ),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Edit Profile',
-                        style: isDark
-                            ? AppTheme.darkHomeModalTitleStyle
-                            : AppTheme.homeModalTitleStyle,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Edit Profile',
+                            style: isDark
+                                ? AppTheme.darkHomeModalTitleStyle
+                                : AppTheme.homeModalTitleStyle,
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.close_rounded),
+                            color: isDark
+                                ? AppTheme.darkTextSecondary
+                                : AppTheme.textSecondary,
+                            onPressed: () => Navigator.of(modalContext).pop(),
+                          ),
+                        ],
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.close_rounded),
-                        color: isDark
-                            ? AppTheme.darkTextSecondary
-                            : AppTheme.textSecondary,
-                        onPressed: () => Navigator.of(sheetContext).pop(),
+                      const SizedBox(height: 16.0),
+                      AppTextField(
+                        label: 'FULL NAME',
+                        hintText: 'Enter your name',
+                        controller: nameController,
+                        validator: (val) => Validators.name(val),
+                      ),
+                      const SizedBox(height: 16.0),
+                      AppTextField(
+                        label: 'PHONE NUMBER',
+                        hintText: 'e.g. +1 (555) 123-4567',
+                        controller: phoneController,
+                        keyboardType: TextInputType.phone,
+                        validator: (val) =>
+                            Validators.required(val, fieldName: 'Phone number'),
+                      ),
+                      const SizedBox(height: 24.0),
+                      AppButton(
+                        text: 'Save Changes',
+                        isLoading: isSaving,
+                        onPressed: isSaving
+                            ? null
+                            : () async {
+                                if (!formKey.currentState!.validate()) return;
+
+                                setModalState(() {
+                                  isSaving = true;
+                                });
+
+                                try {
+                                  await Future.delayed(
+                                    AppTheme.buttonLoadingDuration,
+                                  );
+
+                                  final newName = nameController.text.trim();
+                                  final newPhone = phoneController.text.trim();
+
+                                  final storage =
+                                      ref.read(storageServiceProvider);
+                                  final user = ref.read(currentUserProvider);
+                                  final updatedUser = (user != null)
+                                      ? user.copyWith(
+                                          name: newName,
+                                          phoneNumber: newPhone,
+                                        )
+                                      : UserModel(
+                                          id: 'user_fallback',
+                                          email: 'alex.carter@verve.app',
+                                          name: newName,
+                                          phoneNumber: newPhone,
+                                        );
+                                  await storage.saveCurrentUser(updatedUser);
+                                  await storage.saveUserToList(updatedUser);
+                                  ref
+                                      .read(currentUserProvider.notifier)
+                                      .setUser(updatedUser);
+
+                                  await storage.write(
+                                    key: StorageKeys.userName,
+                                    value: newName,
+                                  );
+                                  await storage.write(
+                                    key: StorageKeys.userPhone,
+                                    value: newPhone,
+                                  );
+
+                                  if (modalContext.mounted) {
+                                    Navigator.of(modalContext).pop();
+                                  }
+
+                                  if (mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          'Profile updated successfully',
+                                        ),
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                  }
+                                } finally {
+                                  if (modalContext.mounted) {
+                                    setModalState(() {
+                                      isSaving = false;
+                                    });
+                                  }
+                                }
+                              },
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16.0),
-                  AppTextField(
-                    label: 'FULL NAME',
-                    hintText: 'Enter your name',
-                    controller: nameController,
-                    validator: (val) => Validators.name(val),
-                  ),
-                  const SizedBox(height: 16.0),
-                  AppTextField(
-                    label: 'PHONE NUMBER',
-                    hintText: 'e.g. +1 (555) 123-4567',
-                    controller: phoneController,
-                    keyboardType: TextInputType.phone,
-                    validator: (val) =>
-                        Validators.required(val, fieldName: 'Phone number'),
-                  ),
-                  const SizedBox(height: 24.0),
-                  AppButton(
-                    text: 'Save Changes',
-                    onPressed: () async {
-                      if (!formKey.currentState!.validate()) return;
-
-                      final newName = nameController.text.trim();
-                      final newPhone = phoneController.text.trim();
-
-                      final storage = ref.read(storageServiceProvider);
-                      await storage.write(
-                        key: StorageKeys.userName,
-                        value: newName,
-                      );
-                      await storage.write(
-                        key: StorageKeys.userPhone,
-                        value: newPhone,
-                      );
-
-                      if (mounted) {
-                        setState(() {
-                          _name = newName;
-                          _phone = newPhone;
-                        });
-                      }
-
-                      if (sheetContext.mounted) {
-                        Navigator.of(sheetContext).pop();
-                      }
-
-                      if (mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Profile updated successfully'),
-                            duration: Duration(seconds: 2),
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );
@@ -319,10 +363,97 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
+  Widget _buildThemeToggleRow({
+    required bool isDark,
+    required ValueChanged<bool> onToggle,
+  }) {
+    return InkWell(
+      onTap: () => onToggle(!isDark),
+      borderRadius: BorderRadius.circular(AppTheme.borderRadius),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: [
+            Container(
+              width: AppTheme.profileItemIconSize,
+              height: AppTheme.profileItemIconSize,
+              decoration: isDark
+                  ? AppTheme.darkProfileItemIconDecoration
+                  : AppTheme.profileItemIconDecoration,
+              alignment: Alignment.center,
+              child: Icon(
+                isDark ? Icons.dark_mode_outlined : Icons.light_mode_outlined,
+                size: 20.0,
+                color: isDark
+                    ? AppTheme.darkProfileIconColor
+                    : AppTheme.profileIconColor,
+              ),
+            ),
+            const SizedBox(width: 16.0),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'APPEARANCE',
+                    style: isDark
+                        ? AppTheme.darkProfileItemLabelStyle
+                        : AppTheme.profileItemLabelStyle,
+                  ),
+                  const SizedBox(height: 2.0),
+                  Text(
+                    isDark ? 'Dark Mode' : 'Light Mode',
+                    style: isDark
+                        ? AppTheme.darkProfileItemValueStyle
+                        : AppTheme.profileItemValueStyle,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+            Switch.adaptive(
+              value: isDark,
+              onChanged: onToggle,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final initial = _name.isNotEmpty ? _name[0].toUpperCase() : 'A';
+    final themeMode = ref.watch(themeModeProvider);
+    final isDark = themeMode == ThemeMode.dark ||
+        (themeMode == ThemeMode.system &&
+            Theme.of(context).brightness == Brightness.dark);
+    final currentUser = ref.watch(currentUserProvider);
+
+    final String displayName;
+    if (currentUser?.name != null && currentUser!.name!.trim().isNotEmpty) {
+      displayName = currentUser.name!.trim();
+    } else if (currentUser?.email != null && currentUser!.email.contains('@')) {
+      final part = currentUser.email.split('@').first;
+      displayName = part.isNotEmpty
+          ? '${part[0].toUpperCase()}${part.substring(1)}'
+          : 'User';
+    } else {
+      displayName = 'Alex Carter';
+    }
+
+    final displayEmail =
+        (currentUser?.email != null && currentUser!.email.isNotEmpty)
+            ? currentUser.email
+            : 'alex.carter@verve.app';
+    final displayPhone =
+        (currentUser?.phoneNumber != null &&
+            currentUser!.phoneNumber!.isNotEmpty)
+            ? currentUser.phoneNumber!
+            : '+1 (555) 123-4567';
+
+    final initial =
+        displayName.isNotEmpty ? displayName[0].toUpperCase() : 'A';
 
     return Scaffold(
       backgroundColor: isDark
@@ -437,7 +568,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               ),
                               const SizedBox(height: 16.0),
                               Text(
-                                _name,
+                                displayName,
                                 style: isDark
                                     ? AppTheme.darkProfileNameStyle
                                     : AppTheme.profileNameStyle,
@@ -461,24 +592,42 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               _buildInfoRow(
                                 icon: Icons.person_outline_rounded,
                                 label: 'FULL NAME',
-                                value: _name,
+                                value: displayName,
                                 isDark: isDark,
                               ),
                               _buildDivider(isDark),
                               _buildInfoRow(
                                 icon: Icons.mail_outline_rounded,
                                 label: 'EMAIL ADDRESS',
-                                value: _email,
+                                value: displayEmail,
                                 isDark: isDark,
                               ),
                               _buildDivider(isDark),
                               _buildInfoRow(
                                 icon: Icons.phone_outlined,
                                 label: 'PHONE NUMBER',
-                                value: _phone,
+                                value: displayPhone,
                                 isDark: isDark,
                               ),
                             ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 16.0),
+
+                        // Appearance Card (Theme Toggle)
+                        Container(
+                          width: double.infinity,
+                          decoration: isDark
+                              ? AppTheme.darkProfileCardDecoration
+                              : AppTheme.profileCardDecoration,
+                          child: _buildThemeToggleRow(
+                            isDark: isDark,
+                            onToggle: (val) {
+                              ref
+                                  .read(themeModeProvider.notifier)
+                                  .toggleTheme();
+                            },
                           ),
                         ),
 

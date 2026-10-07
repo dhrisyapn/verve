@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:verve/models/user_model.dart';
 import 'package:verve/router/app_router.dart';
 import 'package:verve/services/storage_service.dart';
 import 'package:verve/theme/app_theme.dart';
@@ -9,9 +10,6 @@ import 'package:verve/utils/validators.dart';
 import 'package:verve/widgets/app_button.dart';
 import 'package:verve/widgets/app_text_field.dart';
 
-/// Verve User Registration Screen.
-/// Provides fields for Full Name, Email, Phone Number, Password, and
-/// Confirm Password with robust client-side validation and secure storage.
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
 
@@ -78,22 +76,71 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     });
 
     try {
-      // Simulate account registration request
-      await Future<void>.delayed(const Duration(milliseconds: 800));
+      await Future.delayed(AppTheme.buttonLoadingDuration);
+      if (!mounted) return;
+
+      final email = _emailController.text.trim();
+      final name = _nameController.text.trim();
+      final phone = _phoneController.text.trim();
+      final password = _passwordController.text;
 
       final storage = ref.read(storageServiceProvider);
+
+      // Check if user already exists with this email address
+      final emailExists = await storage.userExistsWithEmail(email);
+      if (emailExists) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('An account with this email address already exists.'),
+            backgroundColor: AppTheme.errorColor,
+          ),
+        );
+        return;
+      }
+
+      final newUser = UserModel(
+        id: 'user_${DateTime.now().millisecondsSinceEpoch}',
+        email: email,
+        name: name,
+        phoneNumber: phone,
+        password: password,
+      );
+
+      // 1. Save user data into a userdata list in secure storage including password
+      await storage.saveUserToList(newUser);
+
+      // 2. Save user data to currentuser in secure storage
+      await storage.saveCurrentUser(newUser);
+
+      // Persist session tokens for full compatibility
       await storage.write(
         key: StorageKeys.authToken,
         value: 'verve_jwt_token_${DateTime.now().millisecondsSinceEpoch}',
       );
       await storage.write(
         key: StorageKeys.userEmail,
-        value: _emailController.text.trim(),
+        value: email,
       );
       await storage.write(
         key: StorageKeys.userId,
-        value: 'user_${DateTime.now().millisecondsSinceEpoch}',
+        value: newUser.id,
       );
+      if (name.isNotEmpty) {
+        await storage.write(
+          key: StorageKeys.userName,
+          value: name,
+        );
+      }
+      if (phone.isNotEmpty) {
+        await storage.write(
+          key: StorageKeys.userPhone,
+          value: phone,
+        );
+      }
+
+      // 3. Save user data to provider
+      ref.read(currentUserProvider.notifier).setUser(newUser);
 
       if (!mounted) return;
 

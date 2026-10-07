@@ -173,6 +173,28 @@ class AppTheme {
         ),
       ),
 
+      // Switch Theme (Flat, crisp, no shadows)
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return Colors.white;
+          }
+          return textSecondary;
+        }),
+        trackColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return primaryColor;
+          }
+          return inputFillColor;
+        }),
+        trackOutlineColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return Colors.transparent;
+          }
+          return borderColor;
+        }),
+      ),
+
       // Card Theme (Used for Dashboard & Profile)
       cardTheme: CardThemeData(
         color: surfaceColor,
@@ -349,6 +371,28 @@ class AppTheme {
         ),
       ),
 
+      // Switch Theme (Flat, crisp, no shadows)
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return Colors.white;
+          }
+          return darkTextSecondary;
+        }),
+        trackColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return primaryColor;
+          }
+          return darkInputFillColor;
+        }),
+        trackOutlineColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return Colors.transparent;
+          }
+          return darkBorderColor;
+        }),
+      ),
+
       // Card Theme (Used for Dashboard & Profile)
       cardTheme: CardThemeData(
         color: darkSurfaceColor,
@@ -493,6 +537,7 @@ class AppTheme {
   static const double authCardRadius = 24.0;
   static const double authFieldRadius = 12.0;
   static const double authButtonRadius = 12.0;
+  static const Duration buttonLoadingDuration = Duration(milliseconds: 1500);
   static const double authLogoCardSize = 64.0;
   static const double authLogoIconSize = 34.0;
   static const double authLogoRadius = 16.0;
@@ -593,6 +638,19 @@ class AppTheme {
   static TextStyle get darkAuthFieldHintStyle => GoogleFonts.plusJakartaSans(
     color: darkAuthFieldHint,
     fontSize: 14.0,
+    fontWeight: FontWeight.w400,
+  );
+
+  /// Auth Form Field Error Style
+  static TextStyle get authFieldErrorStyle => GoogleFonts.plusJakartaSans(
+    color: errorColor,
+    fontSize: 12.0,
+    fontWeight: FontWeight.w400,
+  );
+
+  static TextStyle get darkAuthFieldErrorStyle => GoogleFonts.plusJakartaSans(
+    color: errorColor,
+    fontSize: 12.0,
     fontWeight: FontWeight.w400,
   );
 
