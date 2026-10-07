@@ -760,4 +760,407 @@ class AppTheme {
       borderRadius: BorderRadius.circular(authButtonRadius),
     ),
   );
+
+  // -------------------------
+  // Home Screen Design Tokens
+  // -------------------------
+  static const double homePadding = 24.0;
+  static const double homeCardRadius = 24.0;
+  static const double homeActionCardRadius = 16.0;
+  static const double homeTaskCardRadius = 16.0;
+  static const double homeLogoSize = 36.0;
+  static const double homeAvatarSize = 40.0;
+  static const double homeActionIconCircleSize = 48.0;
+  static const double homeActionIconSize = 24.0;
+  static const double homeCheckboxSize = 22.0;
+  static const double homeCheckboxRadius = 6.0;
+  static const double homeBadgeRadius = 6.0;
+  static const double homeBadgeHorizontalPadding = 10.0;
+  static const double homeBadgeVerticalPadding = 4.0;
+  static const double homeActionCardVerticalPadding = 16.0;
+  static const double homeActionCardHorizontalPadding = 12.0;
+  static const double homeTaskCardPadding = 16.0;
+  static const double homeCardSpacing = 12.0;
+
+  static const Color homeBlue = Color(0xFF3B82F6);
+  static const Color homeDarkBlue = Color(0xFF60A5FA);
+  static const Color homeCardBackground = Color(0xA6FFFFFF); // rgba(255, 255, 255, 0.65)
+  static const Color darkHomeCardBackground = Color(0xB31E293B);
+  static const Color homeCardBorder = Color(0xCCCACACA); // rgba(202, 202, 202, 0.80)
+  static const Color darkHomeCardBorder = Color(0x4D475569);
+  static const Color homeActionCardBackground = Color(0x66FFFFFF); // rgba(255, 255, 255, 0.40)
+  static const Color darkHomeActionCardBackground = Color(0x661E293B);
+  static const Color homeActionCardBorder = Color(0x99CACACA); // rgba(202, 202, 202, 0.60)
+  static const Color darkHomeActionCardBorder = Color(0x4D475569);
+  static const Color homeTaskCardBackground = Color(0x66FFFFFF); // rgba(255, 255, 255, 0.40)
+  static const Color darkHomeTaskCardBackground = Color(0x661E293B);
+  static const Color homeTaskCardBorder = Color(0x99CACACA); // rgba(202, 202, 202, 0.60)
+  static const Color darkHomeTaskCardBorder = Color(0x4D475569);
+  static const Color homeBadgeBackground = Color(0xFFEFF6FF);
+  static const Color darkHomeBadgeBackground = Color(0x333B82F6);
+  static const Color homeBadgeText = Color(0xFF3B82F6);
+  static const Color darkHomeBadgeText = Color(0xFF60A5FA);
+  static const Color homeCheckboxBorder = Color(0xFFCBD5E1);
+  static const Color darkHomeCheckboxBorder = Color(0xFF475569);
+  static const Color homeAvatarColor = Color(0xFF3B82F6);
+  static const Color homeCardShadow = Color(0x0D0F172A);
+  static const Color darkHomeCardShadow = Color(0x33000000);
+  static const Color homeActionIconCircleBg = Colors.white;
+  static const Color darkHomeActionIconCircleBg = Color(0xFF334155);
+  static const Color homeActionIconBorder = Color(0x33E2E8F0);
+  static const Color darkHomeActionIconBorder = Color(0x4D475569);
+  static const Color homeActionIconColor = Color(0xFF3B82F6);
+  static const Color darkHomeActionIconColor = Color(0xFF60A5FA);
+  static const Color homeTaskTimeColor = Color(0xFF64748B);
+  static const Color darkHomeTaskTimeColor = Color(0xFF94A3B8);
+  static const Color homeTaskCheckedFill = Color(0xFF3B82F6);
+  static const Color darkHomeTaskCheckedFill = Color(0xFF60A5FA);
+  static const Color homeTaskCheckedIconColor = Colors.white;
+  static const Color darkHomeTaskCheckedIconColor = Color(0xFF0F172A);
+
+  // Home Screen Typography
+  static TextStyle get homeDateStyle => GoogleFonts.plusJakartaSans(
+    color: textSecondary,
+    fontSize: 14.0,
+    fontWeight: FontWeight.w500,
+    height: 1.43,
+  );
+
+  static TextStyle get darkHomeDateStyle => GoogleFonts.plusJakartaSans(
+    color: darkTextSecondary,
+    fontSize: 14.0,
+    fontWeight: FontWeight.w500,
+    height: 1.43,
+  );
+
+  static TextStyle get homeGreetingStyle => GoogleFonts.plusJakartaSans(
+    color: textPrimary,
+    fontSize: 30.0,
+    fontWeight: FontWeight.w800,
+    height: 1.2,
+    letterSpacing: -0.3,
+  );
+
+  static TextStyle get darkHomeGreetingStyle => GoogleFonts.plusJakartaSans(
+    color: darkTextPrimary,
+    fontSize: 30.0,
+    fontWeight: FontWeight.w800,
+    height: 1.2,
+    letterSpacing: -0.3,
+  );
+
+  static TextStyle get homeInsightTitleStyle => GoogleFonts.plusJakartaSans(
+    color: textSecondary,
+    fontSize: 12.0,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 0.60,
+    height: 1.33,
+  );
+
+  static TextStyle get darkHomeInsightTitleStyle => GoogleFonts.plusJakartaSans(
+    color: darkTextSecondary,
+    fontSize: 12.0,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 0.60,
+    height: 1.33,
+  );
+
+  static TextStyle get homeInsightTextStyle => GoogleFonts.plusJakartaSans(
+    color: textPrimary,
+    fontSize: 24.0,
+    fontWeight: FontWeight.w800,
+    height: 1.33,
+  );
+
+  static TextStyle get darkHomeInsightTextStyle => GoogleFonts.plusJakartaSans(
+    color: darkTextPrimary,
+    fontSize: 24.0,
+    fontWeight: FontWeight.w800,
+    height: 1.33,
+  );
+
+  static TextStyle get homeInsightHighlightStyle => GoogleFonts.plusJakartaSans(
+    color: homeBlue,
+    fontSize: 24.0,
+    fontWeight: FontWeight.w800,
+    height: 1.33,
+  );
+
+  static TextStyle get darkHomeInsightHighlightStyle => GoogleFonts.plusJakartaSans(
+    color: homeDarkBlue,
+    fontSize: 24.0,
+    fontWeight: FontWeight.w800,
+    height: 1.33,
+  );
+
+  static TextStyle get homeInsightSubtitleStyle => GoogleFonts.plusJakartaSans(
+    color: textPrimary,
+    fontSize: 14.0,
+    fontWeight: FontWeight.w400,
+    height: 1.43,
+  );
+
+  static TextStyle get darkHomeInsightSubtitleStyle => GoogleFonts.plusJakartaSans(
+    color: darkTextPrimary,
+    fontSize: 14.0,
+    fontWeight: FontWeight.w400,
+    height: 1.43,
+  );
+
+  static TextStyle get homeActionTitleStyle => GoogleFonts.plusJakartaSans(
+    color: textPrimary,
+    fontSize: 14.0,
+    fontWeight: FontWeight.w600,
+    height: 1.43,
+  );
+
+  static TextStyle get darkHomeActionTitleStyle => GoogleFonts.plusJakartaSans(
+    color: darkTextPrimary,
+    fontSize: 14.0,
+    fontWeight: FontWeight.w600,
+    height: 1.43,
+  );
+
+  static TextStyle get homeSectionTitleStyle => GoogleFonts.plusJakartaSans(
+    color: textPrimary,
+    fontSize: 18.0,
+    fontWeight: FontWeight.w700,
+    height: 1.55,
+  );
+
+  static TextStyle get darkHomeSectionTitleStyle => GoogleFonts.plusJakartaSans(
+    color: darkTextPrimary,
+    fontSize: 18.0,
+    fontWeight: FontWeight.w700,
+    height: 1.55,
+  );
+
+  static TextStyle get homeSeeAllStyle => GoogleFonts.plusJakartaSans(
+    color: homeBlue,
+    fontSize: 14.0,
+    fontWeight: FontWeight.w600,
+    height: 1.43,
+  );
+
+  static TextStyle get darkHomeSeeAllStyle => GoogleFonts.plusJakartaSans(
+    color: homeDarkBlue,
+    fontSize: 14.0,
+    fontWeight: FontWeight.w600,
+    height: 1.43,
+  );
+
+  static TextStyle get homeTaskTitleStyle => GoogleFonts.plusJakartaSans(
+    color: textPrimary,
+    fontSize: 14.0,
+    fontWeight: FontWeight.w600,
+    height: 1.43,
+  );
+
+  static TextStyle get darkHomeTaskTitleStyle => GoogleFonts.plusJakartaSans(
+    color: darkTextPrimary,
+    fontSize: 14.0,
+    fontWeight: FontWeight.w600,
+    height: 1.43,
+  );
+
+  static TextStyle get homeTaskTitleCompletedStyle => GoogleFonts.plusJakartaSans(
+    color: textSecondary,
+    fontSize: 14.0,
+    fontWeight: FontWeight.w500,
+    height: 1.43,
+    decoration: TextDecoration.lineThrough,
+  );
+
+  static TextStyle get darkHomeTaskTitleCompletedStyle => GoogleFonts.plusJakartaSans(
+    color: darkTextSecondary,
+    fontSize: 14.0,
+    fontWeight: FontWeight.w500,
+    height: 1.43,
+    decoration: TextDecoration.lineThrough,
+  );
+
+  static TextStyle get homeTaskTimeStyle => GoogleFonts.plusJakartaSans(
+    color: homeTaskTimeColor,
+    fontSize: 12.0,
+    fontWeight: FontWeight.w400,
+    height: 1.33,
+  );
+
+  static TextStyle get darkHomeTaskTimeStyle => GoogleFonts.plusJakartaSans(
+    color: darkHomeTaskTimeColor,
+    fontSize: 12.0,
+    fontWeight: FontWeight.w400,
+    height: 1.33,
+  );
+
+  static TextStyle get homeTaskTagStyle => GoogleFonts.plusJakartaSans(
+    color: homeBadgeText,
+    fontSize: 10.0,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 0.25,
+    height: 1.5,
+  );
+
+  static TextStyle get darkHomeTaskTagStyle => GoogleFonts.plusJakartaSans(
+    color: darkHomeBadgeText,
+    fontSize: 10.0,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 0.25,
+    height: 1.5,
+  );
+
+  static TextStyle get homeAvatarTextStyle => GoogleFonts.inter(
+    color: const Color(0xFFFAFAFA),
+    fontSize: 18.0,
+    fontWeight: FontWeight.w700,
+  );
+
+  // Home Screen Decorations (Flat, zero shadows per project guidelines)
+  static BoxDecoration get homeInsightCardDecoration => BoxDecoration(
+    color: homeCardBackground,
+    borderRadius: BorderRadius.circular(homeCardRadius),
+    border: Border.all(color: homeCardBorder, width: 1.0),
+  );
+
+  static BoxDecoration get darkHomeInsightCardDecoration => BoxDecoration(
+    color: darkHomeCardBackground,
+    borderRadius: BorderRadius.circular(homeCardRadius),
+    border: Border.all(color: darkHomeCardBorder, width: 1.0),
+  );
+
+  static BoxDecoration get homeActionCardDecoration => BoxDecoration(
+    color: homeActionCardBackground,
+    borderRadius: BorderRadius.circular(homeActionCardRadius),
+    border: Border.all(color: homeActionCardBorder, width: 1.0),
+  );
+
+  static BoxDecoration get darkHomeActionCardDecoration => BoxDecoration(
+    color: darkHomeActionCardBackground,
+    borderRadius: BorderRadius.circular(homeActionCardRadius),
+    border: Border.all(color: darkHomeActionCardBorder, width: 1.0),
+  );
+
+  static BoxDecoration get homeActionIconDecoration => BoxDecoration(
+    color: homeActionIconCircleBg,
+    shape: BoxShape.circle,
+    border: Border.all(color: homeActionIconBorder, width: 1.0),
+  );
+
+  static BoxDecoration get darkHomeActionIconDecoration => BoxDecoration(
+    color: darkHomeActionIconCircleBg,
+    shape: BoxShape.circle,
+    border: Border.all(color: darkHomeActionIconBorder, width: 1.0),
+  );
+
+  static BoxDecoration get homeTaskCardDecoration => BoxDecoration(
+    color: homeTaskCardBackground,
+    borderRadius: BorderRadius.circular(homeTaskCardRadius),
+    border: Border.all(color: homeTaskCardBorder, width: 1.0),
+  );
+
+  static BoxDecoration get darkHomeTaskCardDecoration => BoxDecoration(
+    color: darkHomeTaskCardBackground,
+    borderRadius: BorderRadius.circular(homeTaskCardRadius),
+    border: Border.all(color: darkHomeTaskCardBorder, width: 1.0),
+  );
+
+  static BoxDecoration get homeTaskTagDecoration => BoxDecoration(
+    color: homeBadgeBackground,
+    borderRadius: BorderRadius.circular(homeBadgeRadius),
+  );
+
+  static BoxDecoration get darkHomeTaskTagDecoration => BoxDecoration(
+    color: darkHomeBadgeBackground,
+    borderRadius: BorderRadius.circular(homeBadgeRadius),
+  );
+
+  static BoxDecoration get homeAvatarDecoration => BoxDecoration(
+    color: homeAvatarColor,
+    shape: BoxShape.circle,
+    border: Border.all(color: Colors.white, width: 2.0),
+  );
+
+  static BoxDecoration get darkHomeAvatarDecoration => BoxDecoration(
+    color: homeAvatarColor,
+    shape: BoxShape.circle,
+    border: Border.all(color: darkSurfaceColor, width: 2.0),
+  );
+
+  static BoxDecoration get homeCheckboxUncheckedDecoration => BoxDecoration(
+    color: Colors.transparent,
+    borderRadius: BorderRadius.circular(homeCheckboxRadius),
+    border: Border.all(color: homeCheckboxBorder, width: 2.0),
+  );
+
+  static BoxDecoration get darkHomeCheckboxUncheckedDecoration => BoxDecoration(
+    color: Colors.transparent,
+    borderRadius: BorderRadius.circular(homeCheckboxRadius),
+    border: Border.all(color: darkHomeCheckboxBorder, width: 2.0),
+  );
+
+  static BoxDecoration get homeCheckboxCheckedDecoration => BoxDecoration(
+    color: homeTaskCheckedFill,
+    borderRadius: BorderRadius.circular(homeCheckboxRadius),
+    border: Border.all(color: homeTaskCheckedFill, width: 2.0),
+  );
+
+  static BoxDecoration get darkHomeCheckboxCheckedDecoration => BoxDecoration(
+    color: darkHomeTaskCheckedFill,
+    borderRadius: BorderRadius.circular(homeCheckboxRadius),
+    border: Border.all(color: darkHomeTaskCheckedFill, width: 2.0),
+  );
+
+  // Home Screen Modal & Chip Tokens
+  static const Color homeModalBackground = Colors.white;
+  static const Color darkHomeModalBackground = Color(0xFF1E293B);
+  static const Color homeChipBackground = Color(0xFFF1F5F9);
+  static const Color darkHomeChipBackground = Color(0xFF334155);
+  static const Color homeChipSelectedBackground = Color(0xFF3B82F6);
+  static const Color darkHomeChipSelectedBackground = Color(0xFF3B82F6);
+
+  static TextStyle get homeModalTitleStyle => GoogleFonts.plusJakartaSans(
+    color: textPrimary,
+    fontSize: 20.0,
+    fontWeight: FontWeight.w700,
+  );
+
+  static TextStyle get darkHomeModalTitleStyle => GoogleFonts.plusJakartaSans(
+    color: darkTextPrimary,
+    fontSize: 20.0,
+    fontWeight: FontWeight.w700,
+  );
+
+  static TextStyle get homeChipTextStyle => GoogleFonts.plusJakartaSans(
+    color: textSecondary,
+    fontSize: 12.0,
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle get darkHomeChipTextStyle => GoogleFonts.plusJakartaSans(
+    color: darkTextSecondary,
+    fontSize: 12.0,
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle get homeChipSelectedTextStyle => GoogleFonts.plusJakartaSans(
+    color: Colors.white,
+    fontSize: 12.0,
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle get darkHomeChipSelectedTextStyle => GoogleFonts.plusJakartaSans(
+    color: Colors.white,
+    fontSize: 12.0,
+    fontWeight: FontWeight.w600,
+  );
+
+  static BoxDecoration get homeModalDecoration => const BoxDecoration(
+    color: homeModalBackground,
+    borderRadius: BorderRadius.vertical(top: Radius.circular(24.0)),
+  );
+
+  static BoxDecoration get darkHomeModalDecoration => const BoxDecoration(
+    color: darkHomeModalBackground,
+    borderRadius: BorderRadius.vertical(top: Radius.circular(24.0)),
+  );
 }
