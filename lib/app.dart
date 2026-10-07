@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:verve/router/app_router.dart';
 import 'package:verve/theme/app_theme.dart';
 
 class MyApp extends StatelessWidget {
@@ -11,11 +12,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      home: const Scaffold(
-        body: Center(
-          child: Text('Verve'),
-        ),
-      ),
+      themeMode: ThemeMode.light,
+      navigatorKey: AppRouter.navigatorKey,
+      initialRoute: AppRoutes.splash,
+      onGenerateRoute: AppRouter.onGenerateRoute,
     );
   }
 }
+
