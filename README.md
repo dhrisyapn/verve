@@ -33,7 +33,7 @@ flutter doctor
 
 ### 1. Clone or Open the Repository
 ```bash
-git clone <repository-url>
+git clone https://github.com/dhrisyapn/verve
 cd verve
 ```
 
@@ -70,25 +70,6 @@ To run on a specific target device:
 ```bash
 flutter devices
 flutter run -d <device_id>
-```
-
----
-
-## 📦 Building for Production
-
-### Android
-- **APK**:
-  ```bash
-  flutter build apk --release
-  ```
-- **App Bundle (AAB)**:
-  ```bash
-  flutter build appbundle --release
-  ```
-
-### iOS
-```bash
-flutter build ios --release
 ```
 
 ---
