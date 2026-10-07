@@ -460,7 +460,9 @@ class AppTheme {
   // -------------------------
   // Auth & Login Design Tokens
   // -------------------------
-  static const Color authBackgroundColor = Colors.white; // Pure white background
+  static const Color authBackgroundColor = Color(
+    0xFFFAFAFA,
+  ); // Soft ambient background #FAFAFA
   static const Color authBlue = Color(0xFF3B82F6); // Primary action blue
   static const Color authCardBackground = Colors.white;
   static const Color authCardBorder = Color(
@@ -498,6 +500,11 @@ class AppTheme {
   static const double authFieldSpacing = 20.0;
   static const double authLabelSpacing = 6.0;
   static const double authBlurSigma = 10.0;
+
+  // Register Screen Layout & Dimension Constants
+  static const double registerLogoSize = 48.0;
+  static const double registerCardPadding = 20.0;
+  static const double registerFieldSpacing = 16.0;
 
   // Dark Theme Auth Tokens
   static const Color darkAuthBackgroundColor = Color(0xFF0F172A);
@@ -627,6 +634,70 @@ class AppTheme {
     fontWeight: FontWeight.w700,
     height: 1.43,
   );
+
+  /// Register Screen Title Style (24px, Bold, #0F172A)
+  static TextStyle get registerTitleStyle => GoogleFonts.plusJakartaSans(
+    color: textPrimary,
+    fontSize: 24.0,
+    fontWeight: FontWeight.w700,
+    height: 1.33,
+    letterSpacing: -0.2,
+  );
+
+  static TextStyle get darkRegisterTitleStyle => GoogleFonts.plusJakartaSans(
+    color: darkTextPrimary,
+    fontSize: 24.0,
+    fontWeight: FontWeight.w700,
+    height: 1.33,
+    letterSpacing: -0.2,
+  );
+
+  /// Register Screen Subtitle Style (12px, Medium, #64748B)
+  static TextStyle get registerSubtitleStyle => GoogleFonts.plusJakartaSans(
+    color: textSecondary,
+    fontSize: 12.0,
+    fontWeight: FontWeight.w500,
+    height: 1.33,
+  );
+
+  static TextStyle get darkRegisterSubtitleStyle => GoogleFonts.plusJakartaSans(
+    color: darkTextSecondary,
+    fontSize: 12.0,
+    fontWeight: FontWeight.w500,
+    height: 1.33,
+  );
+
+  /// Register Footer Prompt Style (12px, Medium, #64748B)
+  static TextStyle get registerFooterPromptStyle => GoogleFonts.plusJakartaSans(
+    color: authFooterText,
+    fontSize: 12.0,
+    fontWeight: FontWeight.w500,
+    height: 1.33,
+  );
+
+  static TextStyle get darkRegisterFooterPromptStyle =>
+      GoogleFonts.plusJakartaSans(
+        color: darkAuthFooterText,
+        fontSize: 12.0,
+        fontWeight: FontWeight.w500,
+        height: 1.33,
+      );
+
+  /// Register Footer Action Style (12px, Bold, #0F172A)
+  static TextStyle get registerFooterActionStyle => GoogleFonts.plusJakartaSans(
+    color: authFooterAction,
+    fontSize: 12.0,
+    fontWeight: FontWeight.w700,
+    height: 1.33,
+  );
+
+  static TextStyle get darkRegisterFooterActionStyle =>
+      GoogleFonts.plusJakartaSans(
+        color: darkAuthFooterAction,
+        fontSize: 12.0,
+        fontWeight: FontWeight.w700,
+        height: 1.33,
+      );
 
   /// Auth Glassmorphic Card Decoration
   static BoxDecoration get authCardDecoration => BoxDecoration(

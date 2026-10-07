@@ -18,6 +18,7 @@ class AppTextField extends StatelessWidget {
     this.onFieldSubmitted,
     this.focusNode,
     this.enabled = true,
+    this.textCapitalization = TextCapitalization.none,
   });
 
   final String? label;
@@ -31,6 +32,7 @@ class AppTextField extends StatelessWidget {
   final ValueChanged<String>? onFieldSubmitted;
   final FocusNode? focusNode;
   final bool enabled;
+  final TextCapitalization textCapitalization;
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +72,7 @@ class AppTextField extends StatelessWidget {
           obscureText: obscureText,
           keyboardType: keyboardType,
           textInputAction: textInputAction,
+          textCapitalization: textCapitalization,
           validator: validator,
           onFieldSubmitted: onFieldSubmitted,
           enabled: enabled,
